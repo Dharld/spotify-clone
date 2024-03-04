@@ -1,0 +1,86 @@
+@use "../../assets/styles/shadows.scss";
+@use "../../assets/styles/typography.scss";
+
+.snackbar-wrapper {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    padding: .25rem;
+    width: 100%;
+    max-width: 550px;
+
+    .snackbar-message {
+        position: relative;
+        background: var(--component1);
+        border: 1px solid var(--component-outline);
+        overflow: hidden;
+        margin: .5rem;
+        position: relative;
+        border-radius: 4px;
+        padding: .5rem 1rem 1rem;
+        @extend .shadow--sm;
+
+        .transition-entered {
+            transform: translateY(0);
+        }  
+        
+        .transition-exited {
+            transform: translateY(-500px);
+        } 
+
+        .snackbar-title {
+            font-weight: 600;
+            margin-bottom: var(--space-xxxs);
+        }
+
+        &.error {
+            background: var(--danger-background);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+
+            &::after {
+                background-color: var(--danger);
+            }
+
+            .snackbar-close-icon {
+                color: var(--danger);
+            }
+        }
+
+        &.success {
+            background: var(--success-background);
+            border: 1px solid var(--success);
+            color: var(--success);
+
+            &::after {
+                background-color: var(--success);
+            }
+
+            .snackbar-close-icon {
+                color: var(--success);
+            }
+        }
+    
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--medium-contrast);
+            height: 3px;
+        }
+    
+        .snackbar-close-icon {
+            position: absolute;
+            right: .5rem;
+            top: .5rem;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: var(--medium-contrast);
+        }
+    }
+}

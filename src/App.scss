@@ -1,0 +1,13 @@
+@import "../src/assets/styles/globals.scss";
+
+.gallery-grid {
+  grid-auto-rows: minmax(200px, auto);
+}
+
+.App {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  color: white;
+  padding: 1rem 0.75rem;
+}

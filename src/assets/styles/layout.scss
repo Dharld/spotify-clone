@@ -1,0 +1,102 @@
+$gap-horizontal: 10px;
+$gap-vertical: $gap-horizontal;
+
+:root {
+    --grid-gap: 10px;
+}
+
+// Mixins
+$grid-columns: 12;
+
+@mixin grid {
+    @supports(grid-area: auto) {
+        display: grid;
+        grid-column-gap: $gap-horizontal;
+        grid-row-gap: $gap-vertical;
+    }
+}
+
+@mixin gridAuto($min-width) {
+    @supports(grid-area: auto) {
+        grid-template-columns: repeat(auto-fit, minmax($min-width, 1fr));
+    }
+}
+
+@mixin gridLayout($cols...) {
+    @supports(grid-area: auto) {
+        grid-template-columns: repeat($grid-columns, 1fr);
+
+        $i: 1;
+        @each $col in $cols {
+            > :nth-of-type(#{$i}) {
+                grid-column-end: span nth($col, 1);
+
+                @if length($col) > 1 {
+                    grid-row-end: span nth($col, 2);
+                }
+            }
+
+            $i: $i + 1;
+        }
+    }
+}
+
+@mixin gridAdvanced($cols...) {
+    @supports(grid-area: auto) {
+      grid-template-columns: repeat($grid-columns, 1fr);
+  
+      $i: 1;
+      @each $col in $cols {
+        > :nth-of-type(#{$i}) {
+          grid-column-start: nth($col,1);
+          grid-column-end: nth($col,2);
+          grid-row-start: nth($col,3);
+          grid-row-end: nth($col,4);
+        }
+        $i: $i + 1;
+      }
+    }
+  }
+
+// Gallery grid(Same width elements)
+.gallery-grid {
+    @include grid;
+    @include gridAuto(260px);
+}
+
+// one dimension layout(flex)
+.flex-grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin: calc(var(--grid-gap) * -1) 0 0 calc(var(--grid-gap) * -1);
+}
+
+.col {
+    padding: calc(var(--grid-gap)) 0 0 calc(var(--grid-gap));
+    background-clip: padding-box;
+    flex-basis: 100%;
+}
+
+
+
+@function round-width ($i) {
+    $width : floor(100 * $i * 100/ $grid-columns) / 100;
+    @return #{$width}#{"%"};
+}
+
+@for $i from 1 through $grid-columns {
+  .col--#{$i} {
+    flex-basis: round-width($i);
+    max-width: round-width($i); 
+  }
+}
+
+// 2 dimensional grid layout
+.container-grid {
+    @include grid;
+    grid-auto-rows: 150px;
+    @include gridLayout(
+        (7,2), (5,1), (5,1), (12, 1)
+    )
+}
+

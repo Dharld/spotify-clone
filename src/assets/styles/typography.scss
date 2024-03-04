@@ -1,0 +1,118 @@
+// typography.scss
+@import url('https://fonts.cdnfonts.com/css/product-sans');
+/* @import "imports";
+ */@import "spacing";
+
+:root {
+  --font-primary: 'Product Sans';
+
+  /* Set base values */
+  --text-base-size: 1em;
+  --text-scale-ratio: 1.2;
+
+   /* type scale */
+   --text-xs: calc(1em / (var(--text-scale-ratio) * var(--text-scale-ratio)));
+   --text-sm: calc(1em / var(--text-scale-ratio));
+   --text-md: calc(1em * var(--text-scale-ratio));
+   --text-lg: calc(1em * var(--text-scale-ratio) * var(--text-scale-ratio));
+   --text-xl: calc(1em * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
+   --text-xxl: calc(1em * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
+   --text-xxxl: calc(1em * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio) * var(--text-scale-ratio));
+}
+
+body {
+  font-size: var(--text-base-size);
+  font-family: var(--font-primary);
+  color: var(--text-color);
+}
+
+h1, h2, h3, h4, form legend {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: var(--text-color);
+
+  &.bold {
+    font-weight: 500;
+  }
+}
+
+/* text size */
+.text--xxxl {
+  font-size: var(--text-xxxl);
+}
+
+h1, .text--xxl {
+  font-size: var(--text-xxl);
+  line-height: 1.75em;
+  letter-spacing: -1.25px;
+}
+
+h2, .text--xl {
+  font-size: var(--text-xl);
+  line-height: 1.5em;
+  letter-spacing: -1.25px;
+}
+
+h3, .text--lg {
+  font-size: var(--text-lg);
+  line-height: 1.35em;
+  letter-spacing: -1.25px;
+}
+
+h4, .text--md {
+  font-size: var(--text-md);
+ line-height: 1.025em; 
+}
+
+.text--sm, small {
+  font-size: var(--text-sm);
+}
+
+.text--xs {
+  font-size: var(--text-xs);
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 1em;
+}
+
+.body {
+  font-weight: 400;
+  font-size: var(--text-base-size);
+  line-height: 1.2em;
+  color: var(--text-color);
+
+  &.body--sm {
+    font-size: var(--text-sm);
+    line-height: 1.125em;
+  }   
+  
+  &.body--lg {
+    font-size: var(--text-md);
+    line-height: 1.3em;
+  }
+
+  &.body--bold {
+    font-weight: 700;
+  }
+
+  &.body--italic {
+    font-style: italic;
+  }
+}
+
+.display {
+  font-weight: 400;
+  font-size: var(--text-xl);
+  line-height: 1.5em;
+  color: var(--high-contrast);
+
+  &.display--2 {
+    font-size: var(--text-xxl);
+  }
+  &.display--3 {
+    font-size: var(--text-xxxl);
+  }
+}

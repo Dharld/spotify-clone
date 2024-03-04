@@ -1,0 +1,49 @@
+.signup {
+  max-width: 300px;
+  margin: 0 auto;
+  padding-top: 4rem;
+
+  h1 {
+    font-size: 2rem;
+    line-height: 1.25;
+    margin-bottom: 3rem;
+  }
+
+  .form-control {
+    margin-bottom: 4rem;
+  }
+
+  .step {
+    &.step1 {
+      .divider {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin: 2.5rem 0;
+        .line {
+          width: 100%;
+          background: var(--text-subtle);
+          height: 0.25px;
+        }
+      }
+    }
+  }
+}
+
+.warning {
+  font-size: var(--text-sm);
+  padding: 1rem 1rem;
+  background: #ffa42b;
+  color: var(--on-primary);
+  border-radius: 4px;
+  display: flex;
+  gap: 0.5rem;
+
+  .link {
+    color: var(--on-primary);
+  }
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}

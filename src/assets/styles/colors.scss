@@ -1,0 +1,51 @@
+:root {
+    --primary-inactive: rgba(30, 215, 96, 1);
+    --primary-active: rgb(49, 227, 111);
+    --primary-hover: rgb(23, 161, 71);
+    --on-primary: #121212;
+
+/*     --primary-selected: rgba(0, 90, 155, 1); */
+
+ /*    --secondary-inactive: rgba(109, 205, 216, 0.8);
+    --secondary-active: rgba(49, 170, 183, 1);
+    --secondary-hover: rgba(18, 154, 168, 1);
+    --secondary-selected: rgba(33, 113, 122, 1);
+ */
+    --danger: rgba(233, 20, 41, 1);
+    --danger-background: rgb(237, 218, 220);
+
+    --success: rgba(40, 167, 69, 1);
+    --success-background: rgb(219, 240, 224);
+
+    --warning: rgba(255, 164, 43, 1);
+    --warning-background: rgba(255, 164, 43, 1)
+
+    --info: rgba(0, 102, 221, 1);
+    --info-background: rgba(184, 208, 236, 1);
+
+    // Light Theme
+    --high-contrast: rgb(50, 69, 82);
+    --medium-contrast: rgb(86, 105, 118);
+    --low-contrast: rgb(125, 146, 161);
+    --low1-contrast: rgb(169, 183, 193);
+    --lowest-contrast: rgb(235, 239, 243);
+    
+    --primary-background: rgb(18, 18, 18);
+    --component-outline: rgb(217, 226, 231);
+
+    --component1: rgb(255, 255, 255);
+    --component2: rgb(250, 250, 250);
+
+    --text-color: white;
+    --text-subtle: var(--medium-contrast);
+    --text-muted: var(--low-contrast)
+}
+
+.bg-primary {
+    background-color: var(--primary-background)!important;
+}
+
+.primary {
+    color:var(--text-color) ;
+    background-color: var(--primary-inactive);
+}

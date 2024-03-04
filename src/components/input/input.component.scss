@@ -1,0 +1,44 @@
+.input-wrapper {
+  margin-bottom: calc(1rem);
+  position: relative;
+
+  .input {
+    position: relative;
+    border: 1px solid var(--component-outline);
+    border-radius: 5px;
+    transition: var(--transition);
+
+    &:focus-within,
+    &.not-empty {
+      border: 1px solid var(--primary-active) !important;
+    }
+
+    &.has-error {
+      border: 1px solid var(--danger) !important;
+    }
+
+    label {
+      position: absolute;
+      top: -27px;
+      color: white;
+      pointer-events: none;
+      transition: var(--transition);
+      font-size: 1em;
+    }
+
+    input {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      outline: none;
+      border: none;
+      background: transparent;
+      color: white;
+    }
+  }
+
+  .error-message {
+    margin-top: 4px;
+    color: var(--danger);
+    font-size: var(--text-xs);
+  }
+}

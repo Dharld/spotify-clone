@@ -1,0 +1,65 @@
+button {
+  outline: none;
+  border: none;
+  color: var(--on-primary);
+  border-radius: 48px;
+  padding: var(--space-regular) var(--space-md);
+  width: 100%;
+  cursor: pointer;
+  transition: var(--transition);
+  pointer-events: true;
+  margin-bottom: var(--space-md);
+
+  .content {
+    position: relative;
+    img {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+    }
+    span {
+      color: white;
+      font-weight: 700;
+    }
+  }
+
+  &.outline {
+    background-color: transparent;
+    outline: 0.5px solid var(--low-contrast);
+
+    &:hover {
+      background-color: var(--medium-contrast);
+      border: 0.5px solid transparent;
+    }
+  }
+
+  &:disabled {
+    background-color: var(--medium-contrast) !important;
+    pointer-events: none !important;
+  }
+
+  &.primary {
+    background: var(--primary-inactive);
+    color: var(--on-primary);
+    font-weight: 600;
+
+    &:hover {
+      background-color: var(--primary-hover);
+    }
+  }
+
+  &.secondary {
+    background: transparent;
+    border: 1px solid var(--primary-inactive);
+    color: var(--primary-inactive);
+
+    &:hover {
+      background-color: var(--primary-hover);
+      color: white;
+    }
+  }
+}

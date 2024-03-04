@@ -1,0 +1,51 @@
+@import "typography";
+@import "layout";
+@import "colors";
+@import "shadows";
+@import "transitions";
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: var(--primary-inactive);
+  text-decoration: none;
+  transition: var(--transition);
+
+  &:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+  }
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border-radius: 50px;
+  border: 4px solid rgba(226, 226, 226, 0.458);
+  border-top: 4px solid var(--on-primary);
+  animation: spin 0.5s infinite;
+}
+
+@keyframes spin {
+  0% {
+    rotate: 0deg;
+  }
+
+  100% {
+    rotate: 360deg;
+  }
+}
