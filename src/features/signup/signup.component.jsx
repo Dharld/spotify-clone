@@ -45,21 +45,20 @@ const Warning = () => {
 const Signup = () => {
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
-  const [credentials, setCredentials] = useState({
+  const [email, setEmail] = useState("");
+  /* const [credentials, setCredentials] = useState({
     email: "",
     password: "",
     displayName: "",
-  });
+  }); */
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
 
-  useEffect(() => {
-    console.log(credentials);
-  }, [credentials]);
-
   const handleChange = (event) => {
     const { value, name } = event.target;
-    setCredentials({ ...credentials, [name]: value });
+    setEmail(value);
+    console.log(name);
+    // setCredentials({ ...credentials, [name]: value });
   };
 
   const Step1 = () => {
@@ -73,7 +72,7 @@ const Signup = () => {
               name="email"
               validation={emailValidation}
               type="email"
-              value={credentials.email}
+              value={email}
               onChange={handleChange}
               placeholder="Eg: user@gmail.com"
             />
@@ -164,7 +163,7 @@ const Signup = () => {
   const handleStep = (e) => {
     e.preventDefault();
     try {
-      dispatch(checkUserExistence(credentials.email));
+      dispatch(checkUserExistence(email));
       // Signup successful, you can redirect to another page or show a success message
     } catch (error) {
       // Handle signup error, you can show an error message
