@@ -4,7 +4,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import { GoogleAuthProvider } from "firebase/auth";
+import { GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const checkUserExistence = createAsyncThunk(
@@ -46,6 +46,19 @@ export const signinWithGoogle = createAsyncThunk(
       };
       await addUser(returnedUser);
       return returnedUser;
+    }
+  }
+);
+
+export const signInWithFacebook = createAsyncThunk(
+  "auth/signinWithFacebook",
+  async () => {
+    const provider = new FacebookAuthProvider();
+    const res = await signInWithPopup(auth, provider);
+    if (res) {
+      // The signed-in user info.
+      // const { uid, email, displayName, photoURL } = res.user;
+      console.log(res.user);
     }
   }
 );

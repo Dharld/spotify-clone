@@ -27,7 +27,6 @@ const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 
 export async function addUser(user) {
-  console.log(user);
   const userRef = doc(db, "users", user.uid);
   return await setDoc(userRef, user);
 }

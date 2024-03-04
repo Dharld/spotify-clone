@@ -26,6 +26,16 @@
           height: 0.25px;
         }
       }
+      .redirect {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0.25rem;
+        margin: auto;
+        font-size: 0.9em;
+        width: 100%;
+        text-align: center;
+      }
     }
   }
 }

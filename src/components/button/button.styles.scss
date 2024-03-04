@@ -40,6 +40,7 @@ button {
   &:disabled {
     background-color: var(--medium-contrast) !important;
     pointer-events: none !important;
+    cursor: not-allowed;
   }
 
   &.primary {

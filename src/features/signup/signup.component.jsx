@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   checkUserExistence,
   signinWithGoogle,
+  signInWithFacebook,
   signup,
 } from "../../redux/slices/auth/auth.actions";
 import Input from "../../components/input/input.component";
@@ -15,7 +16,6 @@ import warning from "../../assets/icons/shield-exclamation.png";
 import { Link } from "react-router-dom";
 import googleIcon from "../../assets/icons/google.png";
 import facebookIcon from "../../assets/icons/facebook.png";
-import { USER_ALREADY_EXISTS } from "../../utils/errorTypes";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -32,8 +32,35 @@ const Signup = () => {
   };
 
   const signWithGoogle = () => {
-    console.log("here");
     dispatch(signinWithGoogle());
+  };
+
+  const signWithFacebook = () => {
+    dispatch(signInWithFacebook());
+  };
+
+  const Warning = () => {
+    const [show, setShow] = useState(true);
+
+    useEffect(() => {
+      setTimeout(() => {
+        setShow(false);
+      }, 5000);
+    }, []);
+
+    return (
+      show && (
+        <div className="warning">
+          <img src={warning} alt="" />
+          <div className="text">
+            {error.message}{" "}
+            <Link to="/login" className="link">
+              Log in
+            </Link>
+          </div>
+        </div>
+      )
+    );
   };
 
   const Step1 = () => {
@@ -51,17 +78,7 @@ const Signup = () => {
               onChange={handleChange}
               placeholder="Eg: user@gmail.com"
             />
-            {error && (
-              <div className="warning">
-                <img src={warning} alt="" />
-                <div className="text">
-                  {error.message}{" "}
-                  <Link to="/login" className="link">
-                    Log in
-                  </Link>
-                </div>
-              </div>
-            )}
+            {error && <Warning />}
           </div>
           <Button label="Next" type="submit" loading={loading} />
           <div className="divider">
@@ -82,7 +99,18 @@ const Signup = () => {
               type="button"
               icon={facebookIcon}
               style="outline"
+              onClick={signWithFacebook}
+              disabled={true}
             ></Button>
+          </div>
+          <div className="divider">
+            <div className="line"></div>
+          </div>
+          <div className="redirect">
+            Already have an account?
+            <Link to="/login" className="link">
+              Log in
+            </Link>
           </div>
         </form>
       </div>
