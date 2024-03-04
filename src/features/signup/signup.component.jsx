@@ -18,47 +18,47 @@ import googleIcon from "../../assets/icons/google.png";
 import facebookIcon from "../../assets/icons/facebook.png";
 import arrowLeftIcon from "../../assets/icons/arrow-left.png";
 
-const Warning = () => {
-  const [show, setShow] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setShow(false);
-    }, 5000);
-  }, []);
-
-  return (
-    show && (
-      <div className="warning">
-        <img src={warning} alt="" />
-        <div className="text">
-          {error.message}{" "}
-          <Link to="/login" className="link">
-            Log in
-          </Link>
-        </div>
-      </div>
-    )
-  );
-};
-
 const Signup = () => {
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
-  /* const [credentials, setCredentials] = useState({
+  const [credentials, setCredentials] = useState({
     email: "",
     password: "",
     displayName: "",
-  }); */
+  });
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
 
   const handleChange = (event) => {
+    console.log(event.target);
     const { value, name } = event.target;
-    setEmail(value);
-    console.log(name);
-    // setCredentials({ ...credentials, [name]: value });
+    setCredentials({ ...credentials, [name]: value });
+  };
+
+  // Components
+  const Warning = () => {
+    const [show, setShow] = useState(true);
+
+    useEffect(() => {
+      setTimeout(() => {
+        setShow(false);
+      }, 5000);
+    }, []);
+
+    return (
+      show && (
+        <div className="warning">
+          <img src={warning} alt="" />
+          <div className="text">
+            {error.message}{" "}
+            <Link to="/login" className="link">
+              Log in
+            </Link>
+          </div>
+        </div>
+      )
+    );
   };
 
   const Step1 = () => {
@@ -72,8 +72,8 @@ const Signup = () => {
               name="email"
               validation={emailValidation}
               type="email"
-              value={email}
-              onChange={handleChange}
+              value={credentials.email}
+              handleChange={handleChange}
               placeholder="Eg: user@gmail.com"
             />
             {error && <Warning />}
@@ -139,7 +139,7 @@ const Signup = () => {
               name="password"
               type="password"
               value={credentials.password}
-              onChange={handleChange}
+              handleChange={handleChange}
             />
           </div>
           <div className="instructions">
@@ -173,7 +173,7 @@ const Signup = () => {
 
   return (
     <div className="signup">
-      <Step1 />
+      <Step2 />
     </div>
   );
 };

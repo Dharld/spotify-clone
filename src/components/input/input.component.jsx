@@ -7,7 +7,7 @@ export default function Input({
   name = "",
   type = "text",
   value,
-  onChange,
+  handleChange,
   validation,
   onBlur,
   placeholder,
@@ -41,7 +41,7 @@ export default function Input({
           name={name}
           id={name}
           value={value}
-          onChange={onChange}
+          onChange={handleChange}
           onBlur={handleBlur}
           placeholder={placeholder}
         />
