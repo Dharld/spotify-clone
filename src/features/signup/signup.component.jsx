@@ -18,50 +18,48 @@ import googleIcon from "../../assets/icons/google.png";
 import facebookIcon from "../../assets/icons/facebook.png";
 import arrowLeftIcon from "../../assets/icons/arrow-left.png";
 
+const Warning = () => {
+  const [show, setShow] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShow(false);
+    }, 5000);
+  }, []);
+
+  return (
+    show && (
+      <div className="warning">
+        <img src={warning} alt="" />
+        <div className="text">
+          {error.message}{" "}
+          <Link to="/login" className="link">
+            Log in
+          </Link>
+        </div>
+      </div>
+    )
+  );
+};
+
 const Signup = () => {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
   const [step, setStep] = useState(1);
-  const [password, setPassword] = useState("");
-  const [displayName, setDisplayName] = useState("");
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+    displayName: "",
+  });
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
 
+  useEffect(() => {
+    console.log(credentials);
+  }, [credentials]);
+
   const handleChange = (event) => {
-    const email = event.target.value;
-    setEmail(email);
-  };
-
-  const signWithGoogle = () => {
-    dispatch(signinWithGoogle());
-  };
-
-  const signWithFacebook = () => {
-    dispatch(signInWithFacebook());
-  };
-
-  const Warning = () => {
-    const [show, setShow] = useState(true);
-
-    useEffect(() => {
-      setTimeout(() => {
-        setShow(false);
-      }, 5000);
-    }, []);
-
-    return (
-      show && (
-        <div className="warning">
-          <img src={warning} alt="" />
-          <div className="text">
-            {error.message}{" "}
-            <Link to="/login" className="link">
-              Log in
-            </Link>
-          </div>
-        </div>
-      )
-    );
+    const { value, name } = event.target;
+    setCredentials({ ...credentials, [name]: value });
   };
 
   const Step1 = () => {
@@ -75,7 +73,7 @@ const Signup = () => {
               name="email"
               validation={emailValidation}
               type="email"
-              value={email}
+              value={credentials.email}
               onChange={handleChange}
               placeholder="Eg: user@gmail.com"
             />
@@ -93,14 +91,14 @@ const Signup = () => {
               type="button"
               icon={googleIcon}
               style="outline"
-              onClick={signWithGoogle}
+              onClick={() => dispatch(signinWithGoogle())}
             ></Button>
             <Button
               label="Sign up with Facebook"
               type="button"
               icon={facebookIcon}
               style="outline"
-              onClick={signWithFacebook}
+              onClick={() => dispatch(signInWithFacebook())}
               disabled={true}
             ></Button>
           </div>
@@ -141,7 +139,7 @@ const Signup = () => {
               label="Password"
               name="password"
               type="password"
-              value={password}
+              value={credentials.password}
               onChange={handleChange}
             />
           </div>
@@ -166,7 +164,7 @@ const Signup = () => {
   const handleStep = (e) => {
     e.preventDefault();
     try {
-      dispatch(checkUserExistence(email));
+      dispatch(checkUserExistence(credentials.email));
       // Signup successful, you can redirect to another page or show a success message
     } catch (error) {
       // Handle signup error, you can show an error message
@@ -176,7 +174,7 @@ const Signup = () => {
 
   return (
     <div className="signup">
-      <Step2 />
+      <Step1 />
     </div>
   );
 };
