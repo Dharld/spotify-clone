@@ -1,5 +1,5 @@
 .signup {
-  max-width: 300px;
+  max-width: 350px;
   margin: 0 auto;
   padding-top: 4rem;
 
@@ -35,6 +35,86 @@
         font-size: 0.9em;
         width: 100%;
         text-align: center;
+      }
+    }
+
+    &.step2 {
+      .header-wrapper {
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        .left {
+          img {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            left: -30px;
+          }
+        }
+        .header {
+          display: flex;
+
+          .header-title {
+            .subtitle {
+              margin-bottom: var(--space-xxxs);
+              color: var(--text-subtle);
+            }
+          }
+        }
+      }
+
+      .wrapper {
+        margin-top: var(--space-xl);
+
+        .instructions {
+          margin-top: var(--space-xl);
+
+          .points {
+            padding-left: var(--space-md);
+            list-style: none;
+
+            .point {
+              margin-bottom: var(--space-sm);
+              position: relative;
+              transition: var(--transition);
+
+              &::before,
+              &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: calc(-1 * var(--space-md));
+                margin: auto;
+                width: 14px;
+                height: 14px;
+                border: 1px solid white;
+                border-radius: 50%;
+              }
+
+              &.active::after {
+                opacity: 1;
+              }
+              &::after {
+                --size: 9px;
+                width: var(--size);
+                height: var(--size);
+                left: calc(-1 * var(--space-md) + 2.5px);
+                background-color: var(--primary-active);
+                border: none;
+                opacity: 0;
+              }
+            }
+          }
+
+          .button-wrapper {
+            margin-top: var(--space-xl);
+          }
+        }
       }
     }
   }
