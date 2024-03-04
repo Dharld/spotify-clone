@@ -35,7 +35,13 @@ const authSlice = createSlice({
         (action) => action.type.endsWith("/rejected"),
         (state, action) => {
           state.loading = false; // Set loading to false for rejected actions
-          state.error = action.error; // Set error message from action payload
+          if (action.type.startsWith("auth/signinWithGoogle")) {
+            state.error = {
+              message: "Authentication with google failed",
+            };
+          } else {
+            state.error = action.error; // Set error message from action payload
+          }
         }
       );
   },
