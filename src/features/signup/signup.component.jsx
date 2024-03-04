@@ -16,6 +16,7 @@ import warning from "../../assets/icons/shield-exclamation.png";
 import { Link } from "react-router-dom";
 import googleIcon from "../../assets/icons/google.png";
 import facebookIcon from "../../assets/icons/facebook.png";
+import arrowLeftIcon from "../../assets/icons/arrow-left.png";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -107,12 +108,57 @@ const Signup = () => {
             <div className="line"></div>
           </div>
           <div className="redirect">
-            Already have an account?
+            Already have an account?{" "}
             <Link to="/login" className="link">
               Log in
             </Link>
           </div>
         </form>
+      </div>
+    );
+  };
+
+  const Step2 = () => {
+    return (
+      <div className="step step2">
+        <div className="header-wrapper">
+          <div className="left">
+            <img src={arrowLeftIcon} alt="" />
+          </div>
+          <div className="right">
+            <div className="header">
+              <div className="header-title">
+                <div className="subtitle">Step 1 of 3</div>
+                <h4 className="title">Create a password</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="wrapper">
+          <div className="password">
+            <Input
+              label="Password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="instructions">
+            <div className="text">Your password must contain at least</div>
+            <ul className="points">
+              <li className="point">1 letter</li>
+              <li className="point">
+                1 number or special character(example: # ? ! &)
+              </li>
+              <li className="point">10 characters</li>
+            </ul>
+            <div className="button-wrapper">
+              <Button type="button" label="Next" />
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
@@ -130,7 +176,7 @@ const Signup = () => {
 
   return (
     <div className="signup">
-      <Step1 />
+      <Step2 />
     </div>
   );
 };
