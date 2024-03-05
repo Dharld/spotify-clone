@@ -46,13 +46,20 @@
 
         .left {
           img {
-            width: 20px;
-            height: 20px;
+            transition: var(--transition);
+            &:hover {
+              background: var(--low-contrast);
+            }
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            padding: var(--space-xs);
             position: absolute;
             top: 0;
             bottom: 0;
             margin: auto;
-            left: -30px;
+            left: -40px;
           }
         }
         .header {

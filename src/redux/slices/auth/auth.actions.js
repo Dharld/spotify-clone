@@ -5,7 +5,9 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createAction } from "@reduxjs/toolkit";
+
+export const setTempUser = createAction("auth/setTempUser");
 
 export const checkUserExistence = createAsyncThunk(
   "auth/checkUserExistence",
