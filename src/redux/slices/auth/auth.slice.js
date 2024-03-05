@@ -1,7 +1,9 @@
 /* eslint-disable no-useless-catch */
 import { createSlice } from "@reduxjs/toolkit";
+import { setTempUser } from "./auth.actions";
 
 const initialState = {
+  tempUser: null,
   user: null, // Initially no user is logged in
   loading: false, // Initially not loading
   error: null, // Initially no error
@@ -13,6 +15,9 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(setTempUser, (state, action) => {
+        state.tempUser = action.payload;
+      })
       .addMatcher(
         (action) => action.type.endsWith("/pending"),
         (state) => {

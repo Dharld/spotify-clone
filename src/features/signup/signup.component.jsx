@@ -1,6 +1,7 @@
+/* eslint-disable react/display-name */
 /* eslint-disable no-empty */
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   checkUserExistence,
@@ -21,19 +22,16 @@ import arrowLeftIcon from "../../assets/icons/arrow-left.png";
 const Signup = () => {
   const dispatch = useDispatch();
   const [step, setStep] = useState(1);
-  const [email, setEmail] = useState("");
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
-    displayName: "",
   });
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
 
   const handleChange = (event) => {
-    console.log(event.target);
     const { value, name } = event.target;
-    setCredentials({ ...credentials, [name]: value });
+    setCredentials((credentials) => ({ ...credentials, [name]: value }));
   };
 
   // Components
@@ -61,7 +59,23 @@ const Signup = () => {
     );
   };
 
-  const Step1 = () => {
+  const Step1 = useMemo(() => {
+    const handleStep = async (e) => {
+      e.preventDefault();
+      try {
+        const request = dispatch(checkUserExistence(credentials.email));
+        const data = await request;
+        if (!data.error) {
+          setCredentials({ ...credentials, email: credentials.email });
+          setStep(step + 1);
+        }
+        // Signup successful, you can redirect to another page or show a success message
+      } catch (error) {
+        // Handle signup error, you can show an error message
+        console.error("Signup failed:", error.message);
+      }
+    };
+
     return (
       <div className="step step1">
         <h1>Sign Up to start listening</h1>
@@ -71,7 +85,7 @@ const Signup = () => {
               label="Email address"
               name="email"
               validation={emailValidation}
-              type="email"
+              type="text"
               value={credentials.email}
               handleChange={handleChange}
               placeholder="Eg: user@gmail.com"
@@ -113,13 +127,31 @@ const Signup = () => {
         </form>
       </div>
     );
-  };
+  }, [credentials.email, loading]);
 
-  const Step2 = () => {
+  const Step2 = useMemo(() => {
+    const { password } = credentials;
+
+    const rules = [
+      {
+        name: "1 Letter",
+        validate: (value) => /[a-zA-Z]+/.test(value),
+      },
+      {
+        name: "1 Number or special character",
+        validate: (value) =>
+          /[0-9@;:~!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/.test(value),
+      },
+      {
+        name: "10 Characters",
+        validate: (value) => /.{10,}/.test(value),
+      },
+    ];
+
     return (
       <div className="step step2">
         <div className="header-wrapper">
-          <div className="left">
+          <div className="left" onClick={() => setStep(step - 1)}>
             <img src={arrowLeftIcon} alt="" />
           </div>
           <div className="right">
@@ -145,11 +177,14 @@ const Signup = () => {
           <div className="instructions">
             <div className="text">Your password must contain at least</div>
             <ul className="points">
-              <li className="point">1 letter</li>
-              <li className="point">
-                1 number or special character(example: # ? ! &)
-              </li>
-              <li className="point">10 characters</li>
+              {rules.map((rule) => (
+                <li
+                  className={`point ${rule.validate(password) ? "active" : ""}`}
+                  key={rule.name}
+                >
+                  {rule.name}
+                </li>
+              ))}
             </ul>
             <div className="button-wrapper">
               <Button type="button" label="Next" />
@@ -158,24 +193,9 @@ const Signup = () => {
         </div>
       </div>
     );
-  };
+  }, [credentials.password]);
 
-  const handleStep = (e) => {
-    e.preventDefault();
-    try {
-      dispatch(checkUserExistence(email));
-      // Signup successful, you can redirect to another page or show a success message
-    } catch (error) {
-      // Handle signup error, you can show an error message
-      console.error("Signup failed:", error.message);
-    }
-  };
-
-  return (
-    <div className="signup">
-      <Step2 />
-    </div>
-  );
+  return <div className="signup">{step === 1 ? Step1 : Step2}</div>;
 };
 
 export default Signup;

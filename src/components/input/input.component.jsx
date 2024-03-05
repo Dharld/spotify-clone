@@ -39,6 +39,7 @@ export default function Input({
         <input
           type={type}
           name={name}
+          key={name}
           id={name}
           value={value}
           onChange={handleChange}
