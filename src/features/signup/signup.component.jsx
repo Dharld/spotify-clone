@@ -19,6 +19,7 @@ import googleIcon from "../../assets/icons/google.png";
 import facebookIcon from "../../assets/icons/facebook.png";
 import arrowLeftIcon from "../../assets/icons/arrow-left.png";
 import Select from "../../components/select/select.component.jsx";
+import DOB from "../../components/dob/dob.component.jsx";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -224,10 +225,13 @@ const Signup = () => {
           </div>
         </div>
         <div className="wrapper">
-          <Input type="text" label="Name" name="displayName" />
-          <div className="dob">
-            <Select label="Month" items={items} name="month" />
-          </div>
+          <Input
+            type="text"
+            label="Name"
+            sublabel="This name will appear on your profile"
+            name="displayName"
+          />
+          <DOB />
         </div>
       </div>
     );

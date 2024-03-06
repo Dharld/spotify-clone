@@ -79,6 +79,7 @@
         margin-top: var(--space-xl);
       }
     }
+
     &.step2 {
       .wrapper {
         .instructions {
@@ -126,6 +127,12 @@
             margin-top: var(--space-xl);
           }
         }
+      }
+    }
+
+    &.step3 {
+      .wrapper {
+        margin-top: var(--space-xxl);
       }
     }
   }

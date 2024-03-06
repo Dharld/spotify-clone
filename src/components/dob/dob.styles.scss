@@ -1,0 +1,26 @@
+.dob {
+  .dob-label {
+    color: white;
+    pointer-events: none;
+    transition: var(--transition);
+    font-size: 1em;
+    font-weight: 600;
+    margin-bottom: var(--space-xxxs);
+  }
+  .sub-label {
+    color: var(--low-contrast);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-sm);
+  }
+  & > .dob-wrapper {
+    display: flex;
+    gap: var(--space-xxs);
+
+    &:nth-child(2) {
+      flex: 0 1 30%;
+    }
+    &:nth-child(3) {
+      flex: 0 1 35%;
+    }
+  }
+}
