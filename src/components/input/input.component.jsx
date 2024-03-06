@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
+import exclamationIcon from "../../assets/icons/exclamation-red.png";
 import "./input.component.scss";
 
 export default function Input({
@@ -12,6 +13,8 @@ export default function Input({
   validation,
   onBlur,
   placeholder,
+  showError = true,
+  textAlignCenter = false,
 }) {
   const [isEmpty, setIsEmpty] = useState(value === "");
   const [error, setError] = useState(false);
@@ -27,6 +30,15 @@ export default function Input({
       setError(false);
     }
     onBlur && onBlur(e);
+  };
+
+  const onChange = (e) => {
+    if (validation && !validation.test(e.target.value)) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+    handleChange && handleChange(e);
   };
 
   return (
@@ -52,12 +64,18 @@ export default function Input({
           key={name}
           id={name}
           value={value}
-          onChange={handleChange}
+          onChange={onChange}
           onBlur={handleBlur}
           placeholder={placeholder}
+          className={`${textAlignCenter ? "center" : ""}`}
         />
       </div>
-      {error && <div className="error-message">{validation.errorMessage}</div>}
+      {error && showError && (
+        <div className="error">
+          <img src={exclamationIcon} className="error-img" alt="" />
+          <div>{validation.errorMessage}</div>
+        </div>
+      )}
     </div>
   );
 }

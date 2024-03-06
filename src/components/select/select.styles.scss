@@ -55,7 +55,8 @@
       border: none;
       background: transparent;
       color: white;
-      font-size: var(--text-regular);
+      font-size: var(--text-md);
+      max-height: 48px;
     }
     .dropdown-list {
       position: absolute;

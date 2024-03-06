@@ -8,6 +8,7 @@
     transition: var(--transition);
     font-size: 1em;
     font-weight: 600;
+    margin-bottom: var(--space-xxxs);
   }
 
   .sublabel {
@@ -30,7 +31,7 @@
     }
 
     &.has-error {
-      border: 1px solid var(--danger) !important;
+      border: 1.5px solid var(--danger) !important;
     }
 
     input {
@@ -40,16 +41,30 @@
       border: none;
       background: transparent;
       color: white;
+      font-size: var(--text-md);
+      max-height: 48px;
+
+      &.center {
+        text-align: center;
+      }
 
       &::placeholder {
-        font-size: var(--text-lg);
+        font-size: var(--text-regular);
       }
     }
   }
 
-  .error-message {
-    margin-top: 4px;
-    color: var(--danger);
-    font-size: var(--text-xs);
+  .error {
+    display: flex;
+    align-items: start;
+    gap: var(--space-xs);
+    color: var(--danger-text);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-sm);
+
+    .error-img {
+      width: 16px;
+      height: 16px;
+    }
   }
 }

@@ -230,6 +230,7 @@ const Signup = () => {
             label="Name"
             sublabel="This name will appear on your profile"
             name="displayName"
+            handleChange={() => {}}
           />
           <DOB />
         </div>
