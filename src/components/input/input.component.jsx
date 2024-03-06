@@ -6,7 +6,7 @@ export default function Input({
   label,
   name = "",
   type = "text",
-  value,
+  value = "",
   handleChange,
   validation,
   onBlur,

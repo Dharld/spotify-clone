@@ -38,7 +38,8 @@
       }
     }
 
-    &.step2 {
+    &.step2,
+    &.step3 {
       .header-wrapper {
         display: flex;
         align-items: center;
@@ -76,7 +77,10 @@
 
       .wrapper {
         margin-top: var(--space-xl);
-
+      }
+    }
+    &.step2 {
+      .wrapper {
         .instructions {
           margin-top: var(--space-xl);
 
