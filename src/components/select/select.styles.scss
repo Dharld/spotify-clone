@@ -13,6 +13,7 @@
     transition: var(--transition);
     $offset: 22px;
     z-index: 2;
+    max-height: 48px;
 
     &::after,
     &::before {
@@ -26,11 +27,12 @@
       width: 1.5px;
       height: 15px;
       rotate: 45deg;
+      scale: 0.75;
     }
 
     &::before {
       rotate: -45deg;
-      right: $offset + 10px;
+      right: $offset + 8px;
     }
 
     &:focus-within,
@@ -65,6 +67,7 @@
       border: 1px solid var(--low-contrast);
       --padding: var(--space-xxxs) 1em;
       overflow: hidden;
+      padding-bottom: var(--space-xxxs);
 
       & .label {
         padding: var(--padding);

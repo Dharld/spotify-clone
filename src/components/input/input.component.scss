@@ -2,11 +2,27 @@
   margin-bottom: calc(1rem);
   position: relative;
 
+  .label {
+    color: white;
+    pointer-events: none;
+    transition: var(--transition);
+    font-size: 1em;
+    font-weight: 600;
+  }
+
+  .sublabel {
+    color: var(--low-contrast);
+    pointer-events: none;
+    transition: var(--transition);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-sm);
+  }
   .input {
     position: relative;
     border: 1px solid var(--component-outline);
     border-radius: 5px;
     transition: var(--transition);
+    max-height: 48px;
 
     &:focus-within,
     &.not-empty {
@@ -17,15 +33,6 @@
       border: 1px solid var(--danger) !important;
     }
 
-    label {
-      position: absolute;
-      top: -27px;
-      color: white;
-      pointer-events: none;
-      transition: var(--transition);
-      font-size: 1em;
-    }
-
     input {
       width: 100%;
       padding: 1rem 1.25rem;
@@ -33,6 +40,10 @@
       border: none;
       background: transparent;
       color: white;
+
+      &::placeholder {
+        font-size: var(--text-lg);
+      }
     }
   }
 

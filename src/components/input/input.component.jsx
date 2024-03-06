@@ -4,6 +4,7 @@ import "./input.component.scss";
 
 export default function Input({
   label,
+  sublabel,
   name = "",
   type = "text",
   value = "",
@@ -30,12 +31,21 @@ export default function Input({
 
   return (
     <div className="input-wrapper">
+      {label && (
+        <div htmlFor={name} className="label">
+          {label}
+        </div>
+      )}
+      {sublabel && (
+        <div htmlFor={name} className="sublabel">
+          {sublabel}
+        </div>
+      )}
       <div
         className={`input ${isEmpty ? "" : "not-empty"} ${
           !error ? "" : "has-error"
         }`}
       >
-        <label htmlFor={name}>{label}</label>
         <input
           type={type}
           name={name}
