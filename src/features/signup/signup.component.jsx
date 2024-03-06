@@ -18,10 +18,11 @@ import { Link } from "react-router-dom";
 import googleIcon from "../../assets/icons/google.png";
 import facebookIcon from "../../assets/icons/facebook.png";
 import arrowLeftIcon from "../../assets/icons/arrow-left.png";
+import Select from "../../components/select/select.component.jsx";
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -34,7 +35,6 @@ const Signup = () => {
     setCredentials((credentials) => ({ ...credentials, [name]: value }));
   };
 
-  // Components
   const Warning = () => {
     const [show, setShow] = useState(true);
 
@@ -57,7 +57,7 @@ const Signup = () => {
         </div>
       )
     );
-  };
+  }; // Components
 
   const Step1 = useMemo(() => {
     const handleStep = async (e) => {
@@ -148,6 +148,17 @@ const Signup = () => {
       },
     ];
 
+    const handleStep = async (e) => {
+      const validation = rules.reduce((res, r) => {
+        res = res && r.validate(password);
+        return res;
+      }, true);
+      if (validation) {
+        setCredentials({ ...credentials, password });
+        setStep(step + 1);
+      }
+    };
+
     return (
       <div className="step step2">
         <div className="header-wrapper">
@@ -187,7 +198,7 @@ const Signup = () => {
               ))}
             </ul>
             <div className="button-wrapper">
-              <Button type="button" label="Next" />
+              <Button type="button" label="Next" onClick={handleStep} />
             </div>
           </div>
         </div>
@@ -195,7 +206,38 @@ const Signup = () => {
     );
   }, [credentials.password]);
 
-  return <div className="signup">{step === 1 ? Step1 : Step2}</div>;
+  const Step3 = useMemo(() => {
+    const items = ["January", "February", "March", "April", "May"];
+    return (
+      <div className="step step3">
+        <div className="header-wrapper">
+          <div className="left" onClick={() => setStep(step - 1)}>
+            <img src={arrowLeftIcon} alt="" />
+          </div>
+          <div className="right">
+            <div className="header">
+              <div className="header-title">
+                <div className="subtitle">Step 2 of 3</div>
+                <h4 className="title">Tell us about yourself</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="wrapper">
+          <Input type="text" label="Name" name="displayName" />
+          <div className="dob">
+            <Select label="Month" items={items} name="month" />
+          </div>
+        </div>
+      </div>
+    );
+  });
+
+  return (
+    <div className="signup">
+      {step === 1 ? Step1 : step === 2 ? Step2 : Step3}
+    </div>
+  );
 };
 
 export default Signup;

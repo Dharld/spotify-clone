@@ -10,7 +10,7 @@
 
     &:focus-within,
     &.not-empty {
-      border: 1px solid var(--primary-active) !important;
+      border: 1.5px solid white !important;
     }
 
     &.has-error {
