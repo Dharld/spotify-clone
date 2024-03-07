@@ -65,21 +65,20 @@ export const signInWithFacebook = createAsyncThunk(
   }
 );
 
-export const signup = createAsyncThunk(
-  "auth/signup",
-  async ({ email, password }) => {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    const user = userCredential.user;
+export const signup = createAsyncThunk("auth/signup", async (creds) => {
+  const { email, password } = creds;
 
-    await addUser(user, { email, password });
+  const userCredential = await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+  );
+  const user = userCredential.user;
 
-    return user.providerData; // Return user object if signup is successful
-  }
-);
+  await addUser(user, creds);
+
+  return user.providerData; // Return user object if signup is successful
+});
 
 export const logout = createAsyncThunk("auth/logout", async () => {
   await auth.signOut();

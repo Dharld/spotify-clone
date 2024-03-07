@@ -1,29 +1,19 @@
 .input-wrapper {
   margin-bottom: calc(1rem);
   position: relative;
+  overflow: hidden;
+
+  $input-height: 48px;
 
   .label {
-    color: white;
-    pointer-events: none;
-    transition: var(--transition);
-    font-size: 1em;
-    font-weight: 600;
-    margin-bottom: var(--space-xxxs);
-  }
-
-  .sublabel {
-    color: var(--low-contrast);
-    pointer-events: none;
-    transition: var(--transition);
-    font-size: var(--text-sm);
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-xxs);
   }
   .input {
     position: relative;
     border: 1px solid var(--component-outline);
     border-radius: 5px;
     transition: var(--transition);
-    max-height: 48px;
+    max-height: $input-height;
 
     &:focus-within,
     &.not-empty {
@@ -42,7 +32,7 @@
       background: transparent;
       color: white;
       font-size: var(--text-md);
-      max-height: 48px;
+      max-height: $input-height;
       display: flex;
       align-items: center;
 
@@ -62,7 +52,7 @@
     gap: var(--space-xs);
     color: var(--danger-text);
     font-size: var(--text-sm);
-    margin-bottom: var(--space-sm);
+    margin-top: var(--space-sm);
 
     .error-img {
       width: 16px;

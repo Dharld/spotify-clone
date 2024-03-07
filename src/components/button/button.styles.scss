@@ -1,7 +1,7 @@
 button {
   outline: none;
   border: none;
-  color: var(--on-primary);
+  color: var(--on-primary) !important;
   border-radius: 48px;
   padding: var(--space-regular) var(--space-md);
   width: 100%;

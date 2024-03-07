@@ -4,7 +4,7 @@ import Input from "../input/input.component";
 import exclamationIcon from "../../assets/icons/exclamation-red.png";
 import "./dob.styles.scss";
 
-const DOB = () => {
+const DOB = ({ handleChange }) => {
   const months = [
     "January",
     "February",
@@ -80,6 +80,7 @@ const DOB = () => {
           month: "",
           year: "",
         });
+        handleChange(`${year}-${month}-${day}`);
       }
     }
   }, [day, month, year]);

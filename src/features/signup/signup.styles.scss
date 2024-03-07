@@ -156,6 +156,10 @@
         display: flex;
         justify-content: space-between;
       }
+
+      .button-wrapper {
+        margin-top: var(--space-xxxl);
+      }
     }
   }
 }
