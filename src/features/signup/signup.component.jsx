@@ -20,6 +20,7 @@ import facebookIcon from "../../assets/icons/facebook.png";
 import arrowLeftIcon from "../../assets/icons/arrow-left.png";
 import Select from "../../components/select/select.component.jsx";
 import DOB from "../../components/dob/dob.component.jsx";
+import RadioButton from "../../components/radio-button/radio-button.component.jsx";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,9 @@ const Signup = () => {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
+    displayName: "",
+    dob: "",
+    gender: "",
   });
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
@@ -209,6 +213,22 @@ const Signup = () => {
 
   const Step3 = useMemo(() => {
     const items = ["January", "February", "March", "April", "May"];
+
+    const genders = [
+      { value: "M", label: "Male" },
+      { value: "F", label: "Female" },
+      { value: "NA", label: "Prefer not to say" },
+    ];
+
+    const handleChange = (e) => {
+      const value = e.target.value;
+      setCredentials({ ...credentials, displayName: value });
+    };
+
+    const handleChangeRadio = (e) => {
+      const value = e.target.value;
+      setCredentials({ ...credentials, gender: value });
+    };
     return (
       <div className="step step3">
         <div className="header-wrapper">
@@ -230,13 +250,31 @@ const Signup = () => {
             label="Name"
             sublabel="This name will appear on your profile"
             name="displayName"
-            handleChange={() => {}}
+            value={credentials.displayName}
+            handleChange={handleChange}
           />
           <DOB />
+          <div className="checkbox-wrapper">
+            <div className="label">Gender</div>
+            <div className="sublabel">
+              We use your gender to help personalize our content recommendations
+              and ads for you.
+            </div>
+          </div>
+          <div className="options">
+            {genders.map(({ value, label }, i) => (
+              <RadioButton
+                value={value}
+                label={label}
+                handleChangeRadio={handleChangeRadio}
+                key={i}
+              />
+            ))}
+          </div>
         </div>
       </div>
     );
-  });
+  }, [credentials.displayName]);
 
   return (
     <div className="signup">

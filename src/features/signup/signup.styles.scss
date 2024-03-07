@@ -134,6 +134,28 @@
       .wrapper {
         margin-top: var(--space-xl);
       }
+
+      .label {
+        color: white;
+        pointer-events: none;
+        transition: var(--transition);
+        font-size: 1em;
+        font-weight: 600;
+        margin-bottom: var(--space-xxxs);
+      }
+
+      .sublabel {
+        color: var(--low-contrast);
+        pointer-events: none;
+        transition: var(--transition);
+        font-size: var(--text-sm);
+        margin-bottom: var(--space-sm);
+      }
+
+      .options {
+        display: flex;
+        justify-content: space-between;
+      }
     }
   }
 }
