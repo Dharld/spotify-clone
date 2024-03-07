@@ -24,25 +24,65 @@ const DOB = () => {
   const [day, setDay] = useState("");
   const [dayError, setDayError] = useState("");
   const [dayBlur, setDayBlur] = useState(false);
+  const [year, setYear] = useState("");
   const [yearError, setYearError] = useState("");
   const [yearBlur, setYearBlur] = useState(false);
-  const [year, setYear] = useState("");
+  const [dobErrorState, setDobErrorState] = useState({
+    month: "",
+    day: "",
+    year: "",
+  });
 
   useEffect(() => {
-    setDayError(
-      dayValidation.test(day) || !dayBlur
-        ? ""
-        : "Please enter the day of your birth date by entering a number between 1 and 31."
-    );
+    if (dayValidation.test(day) || !dayBlur) {
+      setDayError("");
+      setDobErrorState({ ...dobErrorState, day: "" });
+    } else {
+      setDobErrorState({ ...dobErrorState, day: "error" });
+      setDayError(
+        "Please enter the day of your birth date by entering a number between 1 and 31."
+      );
+    }
   }, [day]);
 
   useEffect(() => {
-    setYearError(
-      yearValidation.test(year) || !yearBlur
-        ? ""
-        : "Please enter a birth year between 1900 and the current Year."
-    );
+    if (yearValidation.test(year) || !yearBlur) {
+      setYearError("");
+      setDobErrorState({ ...dobErrorState, year: "" });
+    } else {
+      setDobErrorState({ ...dobErrorState, year: "error" });
+      setYearError(
+        "Please enter the year of your birth date by entering a number between 1900 and 2100."
+      );
+    }
   }, [year]);
+
+  useEffect(() => {
+    if (day && year && month) {
+      const monthIndex = months.indexOf(month);
+      const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+      const date = new Date(`${year}-${monthIndex + 1}-${day}`);
+      if (date.getMonth() != monthIndex) {
+        setDayError("Please enter a valid birth date");
+        setDobErrorState({
+          day: "error",
+          month: "error",
+          year: "error",
+        });
+        return;
+      } else if (day > daysInMonth) {
+        setDayError(`Selected month (${month}) doesn't have ${day} days.`);
+      } else {
+        setDayError(null);
+        setYearError(null);
+        setDobErrorState({
+          day: "",
+          month: "",
+          year: "",
+        });
+      }
+    }
+  }, [day, month, year]);
 
   const dayValidation = {
     test: (num) => num > 0 && num < 32,
@@ -67,6 +107,37 @@ const DOB = () => {
     const value = e.target.value;
     value.length <= 4 && isNumber(+value) && setYear(e.target.value);
   };
+
+  const handleMonthChange = (selectedMonth) => {
+    setMonth(selectedMonth);
+
+    if (day && year) {
+      const monthIndex = months.indexOf(selectedMonth);
+      const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+      const date = new Date(`${year}-${monthIndex + 1}-${day}`);
+      if (date.getMonth() != monthIndex) {
+        setDayError("Please enter a valid birth date");
+        setDobErrorState({
+          day: "error",
+          month: "error",
+          year: "error",
+        });
+        return;
+      } else if (day > daysInMonth) {
+        setDayError(
+          `Selected month (${selectedMonth}) doesn't have ${day} days.`
+        );
+      } else {
+        setDayError(null);
+        setYearError(null);
+        setDobErrorState({
+          day: "",
+          month: "",
+          year: "",
+        });
+      }
+    }
+  };
   return (
     <div className="dob">
       <div className="dob-label">Date of Birth</div>
@@ -76,7 +147,8 @@ const DOB = () => {
           label="Month"
           items={months}
           name="month"
-          handleChange={(month) => setMonth(month)}
+          handleChange={(month) => handleMonthChange(month)}
+          state={dobErrorState.month}
         />
         <div className="dob-input-wrapper wrapper-day">
           <Input
@@ -87,7 +159,8 @@ const DOB = () => {
             }}
             value={day}
             validation={dayValidation}
-            showError={false}
+            showErrorMessage={false}
+            state={dobErrorState.day}
           />
         </div>
         <div className="dob-input-wrapper wrapper-year">
@@ -99,7 +172,8 @@ const DOB = () => {
             }}
             validation={yearValidation}
             value={year}
-            showError={false}
+            showErrorMessage={false}
+            state={dobErrorState.year}
           />
         </div>
       </div>

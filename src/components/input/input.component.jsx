@@ -13,8 +13,9 @@ export default function Input({
   validation,
   onBlur,
   placeholder,
-  showError = true,
+  showErrorMessage = true,
   textAlignCenter = false,
+  state,
 }) {
   const [isEmpty, setIsEmpty] = useState(value === "");
   const [error, setError] = useState(false);
@@ -55,7 +56,7 @@ export default function Input({
       )}
       <div
         className={`input ${isEmpty ? "" : "not-empty"} ${
-          !error ? "" : "has-error"
+          state === "error" ? "has-error" : ""
         }`}
       >
         <input
@@ -70,7 +71,7 @@ export default function Input({
           className={`${textAlignCenter ? "center" : ""}`}
         />
       </div>
-      {error && showError && (
+      {error && showErrorMessage !== false && (
         <div className="error">
           <img src={exclamationIcon} className="error-img" alt="" />
           <div>{validation.errorMessage}</div>
