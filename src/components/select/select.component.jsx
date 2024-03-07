@@ -9,6 +9,7 @@ export default function Select({
   handleChange,
   validation,
   items,
+  state,
 }) {
   const [isEmpty, setIsEmpty] = useState(value === "");
   const [error, setError] = useState(false);
@@ -41,7 +42,7 @@ export default function Select({
       <div
         className={`select ${isEmpty ? "" : "not-empty"} ${
           !error ? "" : "has-error"
-        }`}
+        } ${state === "error" ? "has-error" : ""}`}
         onClick={() => setOpen(!open)}
       >
         <select name={name} id={name} key={name} value={val} readOnly></select>
