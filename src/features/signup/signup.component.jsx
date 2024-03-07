@@ -11,7 +11,11 @@ import {
 } from "../../redux/slices/auth/auth.actions";
 import Input from "../../components/input/input.component";
 import Button from "../../components/button/button.component";
-import { emailValidation } from "../../utils/validation.util";
+import {
+  emailValidation,
+  nameValidation,
+  requiredValidation,
+} from "../../utils/validation.util";
 import "./signup.styles.scss";
 import warning from "../../assets/icons/shield-exclamation.png";
 import { Link } from "react-router-dom";
@@ -24,7 +28,7 @@ import RadioButton from "../../components/radio-button/radio-button.component.js
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -38,6 +42,10 @@ const Signup = () => {
   const handleChange = (event) => {
     const { value, name } = event.target;
     setCredentials((credentials) => ({ ...credentials, [name]: value }));
+  };
+
+  const handleDate = (dob) => {
+    setCredentials({ ...credentials, dob });
   };
 
   const Warning = () => {
@@ -63,6 +71,10 @@ const Signup = () => {
       )
     );
   }; // Components
+
+  const handleSubmit = () => {
+    dispatch(signup(credentials));
+  };
 
   const Step1 = useMemo(() => {
     const handleStep = async (e) => {
@@ -167,13 +179,13 @@ const Signup = () => {
     return (
       <div className="step step2">
         <div className="header-wrapper">
-          <div className="left" onClick={() => setStep(step - 1)}>
+          <div className="left" onClick={() => setStep(1)}>
             <img src={arrowLeftIcon} alt="" />
           </div>
           <div className="right">
             <div className="header">
               <div className="header-title">
-                <div className="subtitle">Step 1 of 3</div>
+                <div className="subtitle">Step 1 of 2</div>
                 <h4 className="title">Create a password</h4>
               </div>
             </div>
@@ -212,23 +224,12 @@ const Signup = () => {
   }, [credentials.password]);
 
   const Step3 = useMemo(() => {
-    const items = ["January", "February", "March", "April", "May"];
-
     const genders = [
       { value: "M", label: "Male" },
       { value: "F", label: "Female" },
       { value: "NA", label: "Prefer not to say" },
     ];
 
-    const handleChange = (e) => {
-      const value = e.target.value;
-      setCredentials({ ...credentials, displayName: value });
-    };
-
-    const handleChangeRadio = (e) => {
-      const value = e.target.value;
-      setCredentials({ ...credentials, gender: value });
-    };
     return (
       <div className="step step3">
         <div className="header-wrapper">
@@ -238,7 +239,9 @@ const Signup = () => {
           <div className="right">
             <div className="header">
               <div className="header-title">
-                <div className="subtitle">Step 2 of 3</div>
+                <div className="subtitle" onClick={() => setStep(2)}>
+                  Step 2 of 2
+                </div>
                 <h4 className="title">Tell us about yourself</h4>
               </div>
             </div>
@@ -252,8 +255,9 @@ const Signup = () => {
             name="displayName"
             value={credentials.displayName}
             handleChange={handleChange}
+            validation={nameValidation}
           />
-          <DOB />
+          <DOB handleChange={handleDate} />
           <div className="checkbox-wrapper">
             <div className="label">Gender</div>
             <div className="sublabel">
@@ -266,15 +270,24 @@ const Signup = () => {
               <RadioButton
                 value={value}
                 label={label}
-                handleChangeRadio={handleChangeRadio}
+                handleChangeRadio={handleChange}
+                name="gender"
                 key={i}
               />
             ))}
           </div>
+          <div className="button-wrapper">
+            <Button
+              label="Signup"
+              type="submit"
+              loading={loading}
+              onClick={handleSubmit}
+            />
+          </div>
         </div>
       </div>
     );
-  }, [credentials.displayName]);
+  }, [credentials.displayName, credentials.gender]);
 
   return (
     <div className="signup">

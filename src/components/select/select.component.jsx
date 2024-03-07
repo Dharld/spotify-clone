@@ -51,7 +51,6 @@ export default function Select({
           className="input-select"
           value={val === "" ? label : val}
           readOnly
-          onClick={() => console.log("Clicked")}
         />
         {open && (
           <div className="dropdown-list">

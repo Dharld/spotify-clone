@@ -26,9 +26,9 @@ const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 
-export async function addUser(user) {
+export async function addUser(user, creds) {
   const userRef = doc(db, "users", user.uid);
-  return await setDoc(userRef, user);
+  return await setDoc(userRef, creds);
 }
 
 export async function userExists(email) {
