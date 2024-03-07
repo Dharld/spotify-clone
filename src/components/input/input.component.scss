@@ -36,13 +36,15 @@
 
     input {
       width: 100%;
-      padding: 1rem 1.25rem;
+      padding: 1rem 1.125rem;
       outline: none;
       border: none;
       background: transparent;
       color: white;
       font-size: var(--text-md);
       max-height: 48px;
+      display: flex;
+      align-items: center;
 
       &.center {
         text-align: center;
