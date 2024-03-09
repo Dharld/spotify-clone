@@ -38,7 +38,7 @@ export default function Select({
   }, []);
 
   return (
-    <div className="input-wrapper" ref={selectRef}>
+    <div className="select-wrapper" ref={selectRef}>
       <div
         className={`select ${isEmpty ? "" : "not-empty"} ${
           !error ? "" : "has-error"

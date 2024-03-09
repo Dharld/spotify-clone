@@ -4,7 +4,7 @@ import Input from "../input/input.component";
 import exclamationIcon from "../../assets/icons/exclamation-red.png";
 import "./dob.styles.scss";
 
-const DOB = ({ handleChange }) => {
+const DOB = ({ handleChange, handleDOBState }) => {
   const months = [
     "January",
     "February",
@@ -33,6 +33,14 @@ const DOB = ({ handleChange }) => {
     year: "",
   });
 
+  const dayValidation = {
+    test: (num) => num > 0 && num < 32,
+  };
+
+  const yearValidation = {
+    test: (num) => num >= 1900 && num < new Date().getFullYear(),
+  };
+
   useEffect(() => {
     if (dayValidation.test(day) || !dayBlur) {
       setDayError("");
@@ -42,6 +50,7 @@ const DOB = ({ handleChange }) => {
       setDayError(
         "Please enter the day of your birth date by entering a number between 1 and 31."
       );
+      handleDOBState("error");
     }
   }, [day]);
 
@@ -54,44 +63,38 @@ const DOB = ({ handleChange }) => {
       setYearError(
         "Please enter the year of your birth date by entering a number between 1900 and 2100."
       );
+      handleDOBState("error");
     }
   }, [year]);
 
   useEffect(() => {
     if (day && year && month) {
       const monthIndex = months.indexOf(month);
-      const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
       const date = new Date(`${year}-${monthIndex + 1}-${day}`);
-      if (date.getMonth() != monthIndex) {
+      // Function to ensure that the current day is within the month days range
+      if (date.getMonth() != monthIndex || !yearValidation.test(year)) {
         setDayError("Please enter a valid birth date");
         setDobErrorState({
-          day: "error",
           month: "error",
+          day: "error",
           year: "error",
         });
-        return;
-      } else if (day > daysInMonth) {
-        setDayError(`Selected month (${month}) doesn't have ${day} days.`);
+        handleDOBState("error");
       } else {
-        setDayError(null);
-        setYearError(null);
         setDobErrorState({
-          day: "",
           month: "",
+          day: "",
           year: "",
         });
-        handleChange(`${year}-${month}-${day}`);
+        setDayError("");
+        setYearError("");
+        handleChange(
+          `${year}-${(monthIndex + 1 + "").padStart(2, "0")}-${day}`
+        );
+        handleDOBState("valid");
       }
     }
   }, [day, month, year]);
-
-  const dayValidation = {
-    test: (num) => num > 0 && num < 32,
-  };
-
-  const yearValidation = {
-    test: (num) => num >= 1900 && num < new Date().getFullYear(),
-  };
 
   const handleDayChange = (e) => {
     const isNumber = (value) => {
@@ -111,34 +114,8 @@ const DOB = ({ handleChange }) => {
 
   const handleMonthChange = (selectedMonth) => {
     setMonth(selectedMonth);
-
-    if (day && year) {
-      const monthIndex = months.indexOf(selectedMonth);
-      const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-      const date = new Date(`${year}-${monthIndex + 1}-${day}`);
-      if (date.getMonth() != monthIndex) {
-        setDayError("Please enter a valid birth date");
-        setDobErrorState({
-          day: "error",
-          month: "error",
-          year: "error",
-        });
-        return;
-      } else if (day > daysInMonth) {
-        setDayError(
-          `Selected month (${selectedMonth}) doesn't have ${day} days.`
-        );
-      } else {
-        setDayError(null);
-        setYearError(null);
-        setDobErrorState({
-          day: "",
-          month: "",
-          year: "",
-        });
-      }
-    }
   };
+
   return (
     <div className="dob">
       <div className="dob-label">Date of Birth</div>

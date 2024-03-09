@@ -9,6 +9,9 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
+import CryptoJS from "crypto-js";
+
+const secret = import.meta.env.VITE_SOME_KEY;
 
 const firebaseConfig = {
   apiKey: "AIzaSyC5UMR3NXDTiP6g42fHPRM92f5nP2CWPzM",
@@ -26,8 +29,8 @@ const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 
-export async function addUser(user, creds) {
-  const userRef = doc(db, "users", user.uid);
+export async function addUser(uid, creds) {
+  const userRef = doc(db, "users", uid);
   return await setDoc(userRef, creds);
 }
 

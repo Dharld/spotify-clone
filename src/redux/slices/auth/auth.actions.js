@@ -39,14 +39,18 @@ export const signinWithGoogle = createAsyncThunk(
       // The signed-in user info.
       const { uid, email, displayName, photoURL } = res.user;
 
+      console.log(res.user);
+
       const returnedUser = {
         uid,
         email,
         displayName,
         photoURL,
         createdAt: res.user.metadata.createdAt,
+        provider: "Google",
       };
-      await addUser(returnedUser);
+
+      await addUser(returnedUser.uid, returnedUser);
       return returnedUser;
     }
   }
@@ -75,7 +79,10 @@ export const signup = createAsyncThunk("auth/signup", async (creds) => {
   );
   const user = userCredential.user;
 
-  await addUser(user, creds);
+  creds.provider = "Email and Password";
+  creds.createdAt = new Date();
+
+  await addUser(user.uid, creds);
 
   return user.providerData; // Return user object if signup is successful
 });
