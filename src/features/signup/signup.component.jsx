@@ -11,20 +11,17 @@ import {
 } from "../../redux/slices/auth/auth.actions";
 import Input from "../../components/input/input.component";
 import Button from "../../components/button/button.component";
-import {
-  emailValidation,
-  nameValidation,
-  requiredValidation,
-} from "../../utils/validation.util";
+import { emailValidation, nameValidation } from "../../utils/validation.util";
 import "./signup.styles.scss";
 import warning from "../../assets/icons/shield-exclamation.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import googleIcon from "../../assets/icons/google.png";
 import facebookIcon from "../../assets/icons/facebook.png";
 import arrowLeftIcon from "../../assets/icons/arrow-left.png";
-import Select from "../../components/select/select.component.jsx";
+
 import DOB from "../../components/dob/dob.component.jsx";
 import RadioButton from "../../components/radio-button/radio-button.component.jsx";
+import { useToast } from "../../context/toaster.context.jsx";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -36,8 +33,13 @@ const Signup = () => {
     dob: "",
     gender: "",
   });
+  const [dobState, setDOBState] = useState("error");
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
+
+  const navigate = useNavigate();
+
+  const { successToast, errorToast } = useToast();
 
   const handleChange = (event) => {
     const { value, name } = event.target;
@@ -46,6 +48,10 @@ const Signup = () => {
 
   const handleDate = (dob) => {
     setCredentials({ ...credentials, dob });
+  };
+
+  const handleDOBState = (state) => {
+    setDOBState(state);
   };
 
   const Warning = () => {
@@ -72,8 +78,14 @@ const Signup = () => {
     );
   }; // Components
 
-  const handleSubmit = () => {
-    dispatch(signup(credentials));
+  const handleSubmit = async () => {
+    try {
+      const res = await dispatch(signup(credentials));
+      successToast("User has been successfully created!");
+      navigate("/");
+    } catch (e) {
+      errorToast(e.message);
+    }
   };
 
   const Step1 = useMemo(() => {
@@ -257,7 +269,7 @@ const Signup = () => {
             handleChange={handleChange}
             validation={nameValidation}
           />
-          <DOB handleChange={handleDate} />
+          <DOB handleChange={handleDate} handleDOBState={handleDOBState} />
           <div className="checkbox-wrapper">
             <div className="label">Gender</div>
             <div className="sublabel">
@@ -282,12 +294,13 @@ const Signup = () => {
               type="submit"
               loading={loading}
               onClick={handleSubmit}
+              disabled={dobState != "valid"}
             />
           </div>
         </div>
       </div>
     );
-  }, [credentials.displayName, credentials.gender]);
+  }, [credentials.displayName, credentials.gender, loading, dobState]);
 
   return (
     <div className="signup">
