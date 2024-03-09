@@ -8,9 +8,7 @@ export const useToast = () => useContext(ToasterContext);
 
 export const ToasterProvider = ({ children }) => {
   const successToast = (message) => {
-    toast.success(message, {
-      duration: 5000000,
-    });
+    toast.success(message);
   };
 
   const errorToast = (message) => {
