@@ -41,6 +41,12 @@ a {
   animation: spin 0.5s infinite;
 }
 
+div.divider {
+  background-color: rgb(54, 54, 54);
+  margin-block: 2rem;
+  height: 0.1px;
+}
+
 @keyframes spin {
   0% {
     rotate: 0deg;

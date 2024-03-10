@@ -3,7 +3,6 @@
     --primary-active: rgb(49, 227, 111);
     --primary-hover: rgb(23, 161, 71);
     --on-primary: #121212;
-
 /*     --primary-selected: rgba(0, 90, 155, 1); */
 
  /*    --secondary-inactive: rgba(109, 205, 216, 0.8);
@@ -31,11 +30,12 @@
     --low1-contrast: rgb(169, 183, 193);
     --lowest-contrast: rgb(235, 239, 243);
     
-    --primary-background: rgb(18, 18, 18);
+    --primary-background: #121212;
+    --primary-background-grad: #2a2a2a;
     --component-outline: rgb(217, 226, 231);
 
-    --component1: rgb(255, 255, 255);
-    --component2: rgb(250, 250, 250);
+    --component: #121212;
+
 
     --text-color: white;
     --text-subtle: var(--medium-contrast);
