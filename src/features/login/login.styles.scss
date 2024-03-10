@@ -1,0 +1,44 @@
+.login {
+  background-image: linear-gradient(
+    to bottom,
+    var(--primary-background-grad),
+    #000
+  );
+  nav.navbar {
+    padding: var(--space-lg) var(--space-xl);
+    background-color: var(--component);
+  }
+
+  .login-form {
+    width: 700px;
+    margin-inline: auto;
+    background-color: var(--component);
+    margin-top: var(--space-xl);
+    border-radius: 8px;
+    padding: var(--space-regular) var(--space-md) var(--space-xl);
+
+    .divider {
+      width: 80%;
+      margin-inline: auto;
+    }
+
+    .wrapper {
+      h1 {
+        font-size: 2.5rem;
+        margin-block: var(--space-md);
+        text-align: center;
+      }
+      max-width: 300px;
+      margin-inline: auto;
+    }
+  }
+
+  .footer {
+    background-color: var(--component);
+    padding: var(--space-lg) var(--space-xl);
+    margin-top: var(--space-xl);
+    color: var(--low-contrast);
+    font-size: var(--text-sm);
+    text-align: center;
+  }
+}
