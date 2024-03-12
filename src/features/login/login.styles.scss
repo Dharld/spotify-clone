@@ -10,7 +10,8 @@
   }
 
   .login-form {
-    width: 700px;
+    width: 90%;
+    max-width: 700px;
     margin-inline: auto;
     background-color: var(--component);
     margin-top: var(--space-xl);

@@ -1,11 +1,22 @@
 /* eslint-disable no-useless-catch */
 import { createSlice } from "@reduxjs/toolkit";
 import { setTempUser } from "./auth.actions";
-import { useToast } from "../../../context/toaster.context";
+
+const loadUserFromLocalStorage = () => {
+  try {
+    const serializedUser = localStorage.getItem("user");
+    if (serializedUser === null) {
+      return undefined; // If user is not found in local storage, return undefined
+    }
+    return JSON.parse(serializedUser); // Parse serialized user from local storage
+  } catch (err) {
+    return undefined; // If error occurs during parsing, return undefined
+  }
+};
 
 const initialState = {
   tempUser: null,
-  user: null, // Initially no user is logged in
+  user: loadUserFromLocalStorage(), // Initially no user is logged in
   loading: false, // Initially not loading
   error: null, // Initially no error
 };
@@ -33,6 +44,7 @@ const authSlice = createSlice({
           state.loading = false; // Set loading to false for
           if (!action.type.startsWith("auth/check")) {
             state.user = action.payload; // Set user from action payload
+            localStorage.setItem("user", JSON.stringify(action.payload));
           }
         }
       )
@@ -41,13 +53,7 @@ const authSlice = createSlice({
         (action) => action.type.endsWith("/rejected"),
         (state, action) => {
           state.loading = false; // Set loading to false for rejected actions
-          if (action.type.startsWith("auth/signinWithGoogle")) {
-            state.error = {
-              message: "Authentication with google failed",
-            };
-          } else {
-            state.error = action.error; // Set error message from action payload
-          }
+          state.error = action.error; // Set error message from action payload
         }
       );
   },
