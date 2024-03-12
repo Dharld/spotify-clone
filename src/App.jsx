@@ -3,19 +3,20 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./features/home/home.component.jsx";
 import Signup from "./features/signup/signup.component.jsx";
 import Login from "./features/login/login.component.jsx";
+import withAuthGuard from "./components/check-login/with-auth.guard.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    Component: withAuthGuard(Home),
   },
   {
     path: "/signup",
-    element: <Signup />,
+    Component: withAuthGuard(Signup),
   },
   {
     path: "/login",
-    element: <Login />,
+    Component: withAuthGuard(Login),
   },
 ]);
 

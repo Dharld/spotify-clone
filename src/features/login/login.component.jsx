@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./login.styles.scss";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../redux/slices/auth/auth.actions";
+import { login, signinWithGoogle } from "../../redux/slices/auth/auth.actions";
 import { useToast } from "../../context/toaster.context";
 import { errors } from "../../utils/firebase.error";
 
@@ -43,6 +43,21 @@ const Login = () => {
     }
   };
 
+  const handleGoogleSignIn = async (event) => {
+    event.preventDefault();
+    const res = await dispatch(signinWithGoogle());
+    if (!res.error) {
+      successToast("Login successful !");
+      navigate("/");
+    } else {
+      const message = res.error.message;
+      const start = message.indexOf("(");
+      const end = message.lastIndexOf(")");
+      const type = message.substring(start + 1, end);
+      errorToast(errors[type]);
+    }
+  };
+
   return (
     <div className="login">
       <header>
@@ -59,7 +74,7 @@ const Login = () => {
               type="button"
               icon={googleIcon}
               style="outline"
-              onClick={() => {}}
+              onClick={handleGoogleSignIn}
             ></Button>
             <Button
               label="Continue with Facebook"
