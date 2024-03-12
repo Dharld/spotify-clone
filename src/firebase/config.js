@@ -27,6 +27,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 // Access Firebase services using the namespaced API
 const auth = getAuth(firebaseApp);
+
 const db = getFirestore(firebaseApp);
 
 export async function addUser(uid, creds) {

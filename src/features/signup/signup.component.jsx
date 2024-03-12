@@ -82,7 +82,7 @@ const Signup = () => {
     try {
       const res = await dispatch(signup(credentials));
       successToast("User has been successfully created!");
-      navigate("/");
+      navigate("/login");
     } catch (e) {
       errorToast(e.message);
     }
