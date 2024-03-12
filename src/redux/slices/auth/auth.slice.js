@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-catch */
 import { createSlice } from "@reduxjs/toolkit";
 import { setTempUser } from "./auth.actions";
+import { useToast } from "../../../context/toaster.context";
 
 const initialState = {
   tempUser: null,

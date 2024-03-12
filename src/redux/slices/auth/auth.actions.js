@@ -22,13 +22,16 @@ export const checkUserExistence = createAsyncThunk(
 );
 
 // Asynchronous actions
-export const login = createAsyncThunk(
-  "auth/login",
-  async ({ email, credentials }) => {
-    const { user } = await signInWithEmailAndPassword(auth, email, credentials);
+export const login = createAsyncThunk("auth/login", async (creds) => {
+  try {
+    const { email, password } = creds;
+    const { user } = await signInWithEmailAndPassword(auth, email, password);
     console.log(user);
+  } catch (e) {
+    console.error(e);
+    throw new Error(e.message);
   }
-);
+});
 
 export const signinWithGoogle = createAsyncThunk(
   "auth/signinWithGoogle",
@@ -38,8 +41,6 @@ export const signinWithGoogle = createAsyncThunk(
     if (res) {
       // The signed-in user info.
       const { uid, email, displayName, photoURL } = res.user;
-
-      console.log(res.user);
 
       const returnedUser = {
         uid,
