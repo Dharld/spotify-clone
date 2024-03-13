@@ -4,19 +4,32 @@ import Home from "./features/home/home.component.jsx";
 import Signup from "./features/signup/signup.component.jsx";
 import Login from "./features/login/login.component.jsx";
 import withAuthGuard from "./components/check-login/with-auth.guard.jsx";
+import Dashboard from "./features/dashboard/dashboard.component.jsx";
+import Search from "./features/search/search.component.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    // Component: withAuthGuard(Home),
     Component: withAuthGuard(Home),
+    children: [
+      {
+        path: "/",
+        element: <Dashboard />,
+      },
+      {
+        path: "/search",
+        element: <Search />,
+      },
+    ],
   },
   {
     path: "/signup",
-    Component: withAuthGuard(Signup),
+    Component: Signup,
   },
   {
     path: "/login",
-    Component: withAuthGuard(Login),
+    Component: Login,
   },
 ]);
 

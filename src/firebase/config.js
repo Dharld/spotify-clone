@@ -3,6 +3,7 @@ import { getAuth } from "firebase/auth";
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -42,5 +43,31 @@ export async function userExists(email) {
 
   return querySnapshot.docs.length != 0;
 }
+
+export const getUserByUUID = async (uuid) => {
+  try {
+    // Construct the reference to the user document using the provided UUID
+    const userRef = doc(db, "users", uuid);
+
+    // Retrieve the user document
+    const userSnapshot = await getDoc(userRef);
+
+    // Check if the user document exists
+    if (userSnapshot.exists()) {
+      // Extract user data from the document
+      const userData = userSnapshot.data();
+      return userData;
+    } else {
+      // If the user document does not exist, return null or throw an error
+      return null;
+      // You can also throw an error like:
+      // throw new Error('User not found');
+    }
+  } catch (error) {
+    // Handle errors
+    console.error("Error retrieving user:", error);
+    throw error;
+  }
+};
 
 export { auth, db };
