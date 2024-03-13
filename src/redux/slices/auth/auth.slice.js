@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-catch */
 import { createSlice } from "@reduxjs/toolkit";
-import { setTempUser } from "./auth.actions";
+import { setTempUser, login } from "./auth.actions";
 
 const loadUserFromLocalStorage = () => {
   try {
@@ -27,6 +27,11 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase("auth/login/fulfilled", (state, action) => {
+        const { user } = action.payload;
+
+        return user;
+      })
       .addCase(setTempUser, (state, action) => {
         state.tempUser = action.payload;
       })

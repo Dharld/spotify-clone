@@ -14,7 +14,7 @@ import Button from "../../components/button/button.component";
 import { emailValidation, nameValidation } from "../../utils/validation.util";
 import "./signup.styles.scss";
 import warning from "../../assets/icons/shield-exclamation.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import googleIcon from "../../assets/icons/google.png";
 import facebookIcon from "../../assets/icons/facebook.png";
 import arrowLeftIcon from "../../assets/icons/arrow-left.png";
@@ -36,6 +36,8 @@ const Signup = () => {
   const [dobState, setDOBState] = useState("error");
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
+
+  const user = useSelector((state) => state.auth.user);
 
   const navigate = useNavigate();
 
@@ -106,55 +108,61 @@ const Signup = () => {
     };
 
     return (
-      <div className="step step1">
-        <h1>Sign Up to start listening</h1>
-        <form onSubmit={handleStep}>
-          <div className="form-control">
-            <Input
-              label="Email address"
-              name="email"
-              validation={emailValidation}
-              type="text"
-              value={credentials.email}
-              handleChange={handleChange}
-              placeholder="Eg: user@gmail.com"
-            />
-            {error && <Warning />}
+      <>
+        {user ? (
+          <Navigate to="/" replace={true} />
+        ) : (
+          <div className="step step1">
+            <h1>Sign Up to start listening</h1>
+            <form onSubmit={handleStep}>
+              <div className="form-control">
+                <Input
+                  label="Email address"
+                  name="email"
+                  validation={emailValidation}
+                  type="text"
+                  value={credentials.email}
+                  handleChange={handleChange}
+                  placeholder="Eg: user@gmail.com"
+                />
+                {error && <Warning />}
+              </div>
+              <Button label="Next" type="submit" loading={loading} />
+              <div className="divider">
+                <div className="line"></div>
+                <span>or</span>
+                <div className="line"></div>
+              </div>
+              <div className="buttons">
+                <Button
+                  label="Sign up with Google"
+                  type="button"
+                  icon={googleIcon}
+                  style="outline"
+                  onClick={() => dispatch(signinWithGoogle())}
+                ></Button>
+                <Button
+                  label="Sign up with Facebook"
+                  type="button"
+                  icon={facebookIcon}
+                  style="outline"
+                  onClick={() => dispatch(signInWithFacebook())}
+                  disabled={true}
+                ></Button>
+              </div>
+              <div className="divider">
+                <div className="line"></div>
+              </div>
+              <div className="redirect">
+                Already have an account?{" "}
+                <Link to="/login" className="link">
+                  Log in
+                </Link>
+              </div>
+            </form>
           </div>
-          <Button label="Next" type="submit" loading={loading} />
-          <div className="divider">
-            <div className="line"></div>
-            <span>or</span>
-            <div className="line"></div>
-          </div>
-          <div className="buttons">
-            <Button
-              label="Sign up with Google"
-              type="button"
-              icon={googleIcon}
-              style="outline"
-              onClick={() => dispatch(signinWithGoogle())}
-            ></Button>
-            <Button
-              label="Sign up with Facebook"
-              type="button"
-              icon={facebookIcon}
-              style="outline"
-              onClick={() => dispatch(signInWithFacebook())}
-              disabled={true}
-            ></Button>
-          </div>
-          <div className="divider">
-            <div className="line"></div>
-          </div>
-          <div className="redirect">
-            Already have an account?{" "}
-            <Link to="/login" className="link">
-              Log in
-            </Link>
-          </div>
-        </form>
-      </div>
+        )}
+      </>
     );
   }, [credentials.email, loading]);
 

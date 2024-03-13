@@ -1,4 +1,9 @@
-import { auth, addUser, userExists } from "../../../firebase/config";
+import {
+  auth,
+  addUser,
+  userExists,
+  getUserByUUID,
+} from "../../../firebase/config";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -26,7 +31,19 @@ export const login = createAsyncThunk("auth/login", async (creds) => {
   try {
     const { email, password } = creds;
     const { user } = await signInWithEmailAndPassword(auth, email, password);
-    console.log(user);
+    if (user) {
+      const uid = user.uid;
+      let userStored = await getUserByUUID(uid);
+      const createdAt = userStored.createdAt
+        ? userStored.createdAt.toString()
+        : null;
+      return {
+        ...userStored,
+        createdAt,
+      };
+    } else {
+      throw new Error("Invalid credentials");
+    }
   } catch (e) {
     console.error(e);
     throw new Error(e.message);
