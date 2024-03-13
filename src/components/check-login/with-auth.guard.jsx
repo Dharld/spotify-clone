@@ -13,9 +13,6 @@ const withAuthGuard = (WrappedComponent) => {
       if (!user) {
         // Redirect to login page if user is not logged in
         navigate("/login");
-      } else {
-        // Redirect to home page if user is logged in
-        navigate("/");
       }
     }, [user, history]); // Re-run effect when user or history changes
 

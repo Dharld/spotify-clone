@@ -6,6 +6,7 @@ import Login from "./features/login/login.component.jsx";
 import withAuthGuard from "./components/check-login/with-auth.guard.jsx";
 import Dashboard from "./features/dashboard/dashboard.component.jsx";
 import Search from "./features/search/search.component.jsx";
+import Playlist from "./features/playlist/playlist.component.jsx";
 
 const router = createBrowserRouter([
   {
@@ -14,12 +15,16 @@ const router = createBrowserRouter([
     Component: withAuthGuard(Home),
     children: [
       {
-        path: "/",
+        path: "",
         element: <Dashboard />,
       },
       {
-        path: "/search",
+        path: "search",
         element: <Search />,
+      },
+      {
+        path: "playlist",
+        element: <Playlist />,
       },
     ],
   },
