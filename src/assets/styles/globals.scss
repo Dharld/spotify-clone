@@ -3,6 +3,7 @@
 @import "colors";
 @import "shadows";
 @import "transitions";
+@import "variables";
 
 *,
 *::after,
@@ -47,6 +48,19 @@ div.divider {
   height: 0.1px;
 }
 
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+img {
+  max-width: 100%;
+}
+
 @keyframes spin {
   0% {
     rotate: 0deg;
@@ -55,4 +69,21 @@ div.divider {
   100% {
     rotate: 360deg;
   }
+}
+
+$prefix: "--"; // Prefix string for custom CSS properties
+
+// Merges a variable name with $prefix
+@function custom-property-name($name) {
+  @return $prefix + $name;
+}
+
+// Defines a custom property
+@mixin define-custom-property($name, $value) {
+  #{custom-property-name($name)}: $value;
+}
+
+body {
+  // Append SASS variables which are desired to be accesible:
+  @include define-custom-property("left-sidebar-width", $left-sidebar-width);
 }

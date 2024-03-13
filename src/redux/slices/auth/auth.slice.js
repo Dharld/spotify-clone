@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-catch */
 import { createSlice } from "@reduxjs/toolkit";
-import { setTempUser, login } from "./auth.actions";
+import { setTempUser } from "./auth.actions";
 
 const loadUserFromLocalStorage = () => {
   try {

@@ -1,9 +1,11 @@
 import { Outlet } from "react-router-dom";
+import "./home.styles.scss";
+import Sidebar from "./components/sidebar/sidebar.component";
 
 const Home = () => {
   return (
-    <div>
-      <nav>Sidebar</nav>
+    <div className="home-wrapper">
+      <Sidebar />
       <Outlet></Outlet>
     </div>
   );

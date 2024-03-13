@@ -1,0 +1,17 @@
+.icon-wrapper {
+  width: 48px;
+  padding: 0 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  &.fill-white {
+    fill: var(--low-contrast);
+    transition: var(--transition);
+
+    &:hover,
+    &.active {
+      fill: white;
+    }
+  }
+}
