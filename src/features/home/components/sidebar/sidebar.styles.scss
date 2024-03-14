@@ -42,17 +42,31 @@
       .playlists {
         display: flex;
         flex-direction: column;
-        gap: var(--space-regular);
         margin-top: var(--space-md);
 
         .icon {
+          width: 100%;
+
           a {
-            display: flex;
-            gap: calc(var(--space-xs) * 1.25);
+            gap: 0;
+            padding: var(--space-xs) var(--space-xs);
+            border-radius: 6px;
+
+            &:hover {
+              background-color: var(--background-subtle);
+            }
+          }
+
+          .icon-wrap {
+            width: unset;
+            height: unset;
+            display: grid;
+            place-items: center;
           }
         }
         .informations {
           display: none;
+          flex: 1;
 
           .title {
             color: white;
@@ -80,6 +94,18 @@
           .informations {
             display: block;
           }
+
+          a {
+            display: flex;
+            gap: calc(var(--space-xs) * 1.25);
+            padding: var(--space-xs) var(--space-xs);
+            border-radius: 6px;
+          }
+
+          .icon-wrap {
+            width: 48px;
+            height: 48px;
+          }
         }
 
         .nav-li {
@@ -87,10 +113,6 @@
 
           img {
             border-radius: 4px;
-          }
-          .icon-wrap {
-            width: 48px;
-            height: 48px;
           }
         }
       }

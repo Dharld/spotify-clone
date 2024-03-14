@@ -130,7 +130,7 @@ const Sidebar = () => {
               return (
                 <li className="nav-li" key={label}>
                   <div className="icon">
-                    <Link to="playlist" className="nav-li">
+                    <Link to="playlist" className="nav-link">
                       <div className="icon-wrap">
                         <img src={imageUrl} alt="" />
                       </div>
