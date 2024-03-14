@@ -1,0 +1,19 @@
+.icon-container {
+  padding: var(--space-xxxs);
+  background-color: var(--background);
+  transition: var(--transition);
+  border-radius: 50px;
+
+  &:hover {
+    background-color: var(--background-medium);
+  }
+  .icon-wrapper {
+    padding: 0;
+    width: 24px;
+    aspect-ratio: 1;
+
+    path {
+      transform: translate(4px, 4px);
+    }
+  }
+}

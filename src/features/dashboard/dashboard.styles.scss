@@ -1,0 +1,18 @@
+.dashboard {
+  .header {
+    display: flex;
+    justify-content: space-between;
+
+    .buttons {
+      display: flex;
+      gap: 0.25rem;
+    }
+  }
+
+  .tags {
+    display: flex;
+    gap: var(--space-xxs);
+    margin: var(--space-regular) 0;
+    padding: 0 var(--space-xxxs);
+  }
+}
