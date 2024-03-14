@@ -1,4 +1,4 @@
-.wrapper {
+.wrapper.sidebar {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -6,7 +6,7 @@
   max-width: 72px;
 
   &.expanded {
-    max-width: 280px;
+    max-width: 420px;
 
     .nav-li a:not(.active) {
       color: var(--low-contrast) !important;
@@ -16,49 +16,179 @@
       color: white !important;
     }
   }
-}
-.nav {
-  background-color: var(--component);
-  padding: var(--space-md) 0.65em;
-  border-radius: 8px;
+  .nav {
+    background-color: var(--component);
+    padding: var(--space-md) 0.65em;
+    border-radius: 8px;
 
-  &.flex-1 {
-    flex: 1;
-  }
-
-  .nav-ul {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-regular);
-
-    .nav-li {
-      a {
-        display: flex;
-        align-items: center;
-        gap: var(--space-xs);
-        color: white;
-        text-decoration: inherit;
-        font-weight: 600;
-      }
+    &.flex-1 {
+      flex: 1;
     }
-    .playlists {
+
+    .nav-ul {
       display: flex;
       flex-direction: column;
       gap: var(--space-regular);
 
       .nav-li {
-        cursor: pointer;
+        a {
+          display: flex;
+          align-items: center;
+          gap: var(--space-xs);
+          color: white;
+          text-decoration: inherit;
+        }
+      }
+      .playlists {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-regular);
+        margin-top: var(--space-md);
 
-        img {
-          border-radius: 4px;
+        .icon {
+          a {
+            display: flex;
+            gap: calc(var(--space-xs) * 1.25);
+          }
         }
-        .icon-wrap {
-          width: 48px;
-          height: 48px;
+        .informations {
+          display: none;
+
+          .title {
+            color: white;
+            font-size: var(--text-regular);
+            font-weight: 600;
+          }
+
+          .dot {
+            width: 3px;
+            height: 3px;
+            background-color: var(--low-contrast);
+            border-radius: 50%;
+          }
+          .details {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 0.9em;
+          }
         }
+
+        &.expanded {
+          margin-top: 0;
+
+          .informations {
+            display: block;
+          }
+        }
+
+        .nav-li {
+          cursor: pointer;
+
+          img {
+            border-radius: 4px;
+          }
+          .icon-wrap {
+            width: 48px;
+            height: 48px;
+          }
+        }
+      }
+    }
+  }
+
+  .nav-li {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+
+    &:hover {
+      color: white;
+    }
+
+    .buttons {
+      display: flex;
+
+      .button-container {
+        width: fit-content;
+        aspect-ratio: 1;
+        background: transparent;
+        display: grid;
+        border-radius: 50%;
+        transition: var(--transition);
 
         &:hover {
-          box-shadow: 0 0 0px 8px rgba(50, 69, 82, 0.11);
+          background: var(--background-subtle);
+
+          svg {
+            fill: white;
+          }
+        }
+      }
+
+      svg {
+        fill: var(--low-contrast);
+        border-radius: 50%;
+
+        path {
+          transform: translate(4px, 4px);
+        }
+      }
+    }
+  }
+  .playlist-icon {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &:hover {
+      color: white;
+      span {
+        color: white;
+        transition: var(--transition);
+      }
+      svg {
+        fill: white;
+        transition: var(--transition);
+      }
+    }
+
+    span {
+      margin-left: var(--space-xxs);
+      color: var(--low-contrast);
+      user-select: none;
+    }
+  }
+
+  .tags {
+    margin: var(--space-xs) 0 var(--space-regular);
+  }
+
+  .parameters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-regular);
+
+    .recents {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xxxs);
+      user-select: none;
+      cursor: pointer;
+      color: var(--low-contrast);
+
+      svg {
+        transform: translate(4px, 4px);
+        fill: var(--low-contrast);
+        transition: var(--transition);
+      }
+
+      &:hover {
+        color: white;
+
+        svg {
+          fill: white;
         }
       }
     }

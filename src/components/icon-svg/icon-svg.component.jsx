@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import "./icon-svg.styles.scss";
 
-const IconSVG = ({ name, active, handleClick }) => {
+const IconSVG = ({ name, active, handleClick, size }) => {
   // Define icon paths
   const icons = {
     home: {
@@ -31,12 +31,29 @@ const IconSVG = ({ name, active, handleClick }) => {
         <path d="M14.5 2.134a1 1 0 0 1 1 0l6 3.464a1 1 0 0 1 .5.866V21a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1V3a1 1 0 0 1 .5-.866zM16 4.732V20h4V7.041l-4-2.309zM3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zm6 0a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1z" />
       ),
     },
+    add: {
+      active: (
+        <path d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z"></path>
+      ),
+    },
+
+    arrowNext: {
+      active: (
+        <path d="M7.19 1A.749.749 0 0 1 8.47.47L16 7.99l-7.53 7.521a.75.75 0 0 1-1.234-.815.75.75 0 0 1 .174-.243l5.72-5.714H.75a.75.75 0 1 1 0-1.498h12.38L7.41 1.529a.749.749 0 0 1-.22-.53z"></path>
+      ),
+    },
+
+    tracks: {
+      active: (
+        <path d="M15 14.5H5V13h10v1.5zm0-5.75H5v-1.5h10v1.5zM15 3H5V1.5h10V3zM3 3H1V1.5h2V3zm0 11.5H1V13h2v1.5zm0-5.75H1v-1.5h2v1.5z"></path>
+      ),
+    },
   };
 
   return (
     <div
       onClick={handleClick}
-      className={`icon-wrapper fill-white ${active ? "active" : ""}`}
+      className={`icon-wrapper fill-white ${active ? "active" : ""} ${size}`}
     >
       <svg
         data-encore-id="icon"

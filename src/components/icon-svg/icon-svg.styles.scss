@@ -5,6 +5,11 @@
   display: flex;
   align-items: center;
 
+  &.small {
+    width: 32px;
+    padding: 0 8px;
+  }
+
   &.fill-white {
     fill: var(--low-contrast);
     transition: var(--transition);
