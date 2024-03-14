@@ -1,0 +1,14 @@
+.tag {
+  padding: var(--space-xs) var(--space-regular);
+  font-size: var(--text-regular);
+  background: var(--background-medium);
+  width: fit-content;
+  cursor: pointer;
+  transition: var(--transition);
+  border-radius: 24px;
+  font-size: 0.85em;
+
+  &:hover {
+    background: var(--background-medium-hover);
+  }
+}
