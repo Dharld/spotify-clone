@@ -20,6 +20,88 @@ const Dashboard = () => {
         <Tag label="Podcasts" />
         <Tag label="Audiobooks" />
       </div>
+      <div className="recents">
+        <div className="recent">
+          <div className="img">
+            <img
+              src="https://i.scdn.co/image/ab67706f00000002442131f5be7366c4c3ededb3"
+              alt=""
+            />
+          </div>
+          <div className="text">Confidence Boost</div>
+          <div className="play-button"></div>
+        </div>
+        <div className="recent">
+          <div className="img">
+            <img
+              src="https://i.scdn.co/image/ab67706f00000002442131f5be7366c4c3ededb3"
+              alt=""
+            />
+          </div>
+          <div className="text">Confidence Boost</div>
+          <div className="play-button"></div>
+        </div>
+        <div className="recent">
+          <div className="img">
+            <img
+              src="https://i.scdn.co/image/ab67706f00000002442131f5be7366c4c3ededb3"
+              alt=""
+            />
+          </div>
+          <div className="text">Confidence Boost</div>
+          <div className="play-button"></div>
+        </div>
+        <div className="recent">
+          <div className="img">
+            <img
+              src="https://i.scdn.co/image/ab67706f00000002442131f5be7366c4c3ededb3"
+              alt=""
+            />
+          </div>
+          <div className="text">Confidence Boost</div>
+          <div className="play-button"></div>
+        </div>
+        <div className="recent">
+          <div className="img">
+            <img
+              src="https://i.scdn.co/image/ab67706f00000002442131f5be7366c4c3ededb3"
+              alt=""
+            />
+          </div>
+          <div className="text">Confidence Boost</div>
+          <div className="play-button"></div>
+        </div>
+        <div className="recent">
+          <div className="img">
+            <img
+              src="https://i.scdn.co/image/ab67706f00000002442131f5be7366c4c3ededb3"
+              alt=""
+            />
+          </div>
+          <div className="text">Confidence Boost</div>
+          <div className="play-button"></div>
+        </div>
+        <div className="recent">
+          <div className="img">
+            <img
+              src="https://i.scdn.co/image/ab67706f00000002442131f5be7366c4c3ededb3"
+              alt=""
+            />
+          </div>
+          <div className="text">Confidence Boost</div>
+          <div className="play-button"></div>
+        </div>
+        <div className="recent">
+          <div className="img">
+            <img
+              src="https://i.scdn.co/image/ab67706f00000002442131f5be7366c4c3ededb3"
+              alt=""
+            />
+          </div>
+          <div className="text">Confidence Boost</div>
+          <div className="play-button"></div>
+        </div>
+      </div>
     </div>
   );
 };
