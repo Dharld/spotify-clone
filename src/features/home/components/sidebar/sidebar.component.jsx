@@ -6,7 +6,7 @@ import { useState } from "react";
 import Tag from "../../../../components/tag/tag.component";
 
 const Sidebar = () => {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   const [links, setLinks] = useState([
     {

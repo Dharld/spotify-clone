@@ -1,6 +1,8 @@
 @import "../../assets/styles/layout.scss";
 
 .dashboard {
+  overflow: auto;
+
   .header {
     display: flex;
     justify-content: space-between;

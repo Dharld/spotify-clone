@@ -1,0 +1,54 @@
+@import "../../assets/styles/layout.scss";
+
+.collection {
+  margin-top: var(--space-lg);
+  .collection-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+
+    .collection-title {
+      letter-spacing: 0.125px;
+    }
+
+    .show-all {
+      font-weight: 700;
+    }
+  }
+
+  .collection-items {
+    width: 100%;
+    @include grid;
+    @include gridAuto(calc(100% / 7 - 10px));
+    justify-content: space-between;
+
+    .collection-item {
+      margin-top: var(--space-regular);
+      padding: var(--space-xs);
+      background: transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+
+      &:hover {
+        background: var(--background-medium);
+      }
+
+      img {
+        border-radius: 8px;
+      }
+      a.collection-item-name {
+        display: block;
+        color: white;
+        text-decoration: none;
+        font-weight: 700;
+        margin-block: var(--space-xxxs);
+      }
+      .collection-item-description {
+        color: var(--medium-contrast);
+        font-size: var(--text-sm);
+        line-height: 1.4;
+      }
+    }
+  }
+}
