@@ -21,6 +21,7 @@ a {
   text-decoration: none;
   transition: var(--transition);
   text-decoration: underline;
+  cursor: pointer;
 
   &:hover {
     color: var(--primary-hover);
@@ -86,4 +87,17 @@ $prefix: "--"; // Prefix string for custom CSS properties
 body {
   // Append SASS variables which are desired to be accesible:
   @include define-custom-property("left-sidebar-width", $left-sidebar-width);
+}
+
+/* For WebKit (Chrome, Safari, etc.) */
+::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the thumb */
 }
