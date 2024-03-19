@@ -1,7 +1,7 @@
 import "./dashboard.styles.scss";
 import IconContainer from "../../components/icon-container/icon-container.component";
 import Tag from "../../components/tag/tag.component";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Recent from "../../components/recent/recent.component.jsx";
 import Collection from "../../components/collection/collection.component.jsx";
 
@@ -28,34 +28,57 @@ const Dashboard = () => {
     new Array(4).fill(COLLECTION_ITEM)
   );
 
-  console.log(collections);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const dashboardRef = useRef();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentPosition = dashboardRef.current.scrollTop;
+      console.log(currentPosition);
+      setScrollPosition(currentPosition);
+    };
+
+    dashboardRef.current.addEventListener("scroll", handleScroll);
+
+    return () => {
+      dashboardRef.current.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
-    <div className="dashboard">
-      <div className="header">
-        <div className="buttons">
-          <IconContainer name="prev" />
-          <IconContainer name="next" />
+    <div
+      className={`dashboard ${scrollPosition > 50 ? "scrolled" : ""}`}
+      ref={dashboardRef}
+    >
+      <div className="header-wrapper">
+        <div className="header">
+          <div className="buttons">
+            <IconContainer name="prev" />
+            <IconContainer name="next" />
+          </div>
+          <div className="user">
+            <IconContainer name="bell" />
+          </div>
         </div>
-        <div className="user">
-          <IconContainer name="bell" />
+        <div className="tags">
+          <Tag label="All" />
+          <Tag label="Music" />
+          <Tag label="Podcasts" />
+          <Tag label="Audiobooks" />
         </div>
       </div>
-      <div className="tags">
-        <Tag label="All" />
-        <Tag label="Music" />
-        <Tag label="Podcasts" />
-        <Tag label="Audiobooks" />
-      </div>
-      <div className="recents">
-        {recents.map((r, i) => (
-          <Recent label={r.label} src={r.src} key={i} />
-        ))}
-      </div>
-      <div className="collections">
-        {collections.map((c, i) => (
-          <Collection key={i} collection={c} />
-        ))}
+
+      <div className="dashboard-body">
+        <div className="recents">
+          {recents.map((r, i) => (
+            <Recent label={r.label} src={r.src} key={i} />
+          ))}
+        </div>
+        <div className="collections">
+          {collections.map((c, i) => (
+            <Collection key={i} collection={c} />
+          ))}
+        </div>
       </div>
     </div>
   );
