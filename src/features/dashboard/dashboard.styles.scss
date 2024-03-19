@@ -1,7 +1,26 @@
 @import "../../assets/styles/layout.scss";
 
 .dashboard {
-  overflow: auto;
+  height: 100%;
+  overflow-y: scroll;
+  position: relative;
+
+  &.scrolled {
+    .header-wrapper {
+      background-color: var(--background-low);
+      transition: var(--transition);
+    }
+  }
+
+  .dashboard-body {
+    padding: var(--space-md);
+  }
+
+  .header-wrapper {
+    padding: var(--space-md);
+    position: sticky;
+    top: 0;
+  }
 
   .header {
     display: flex;
