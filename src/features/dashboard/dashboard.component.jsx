@@ -10,15 +10,45 @@ const RECENT_ITEM = {
   label: "Confidence Boost",
 };
 
-const ITEM = {
-  src: "https://i.scdn.co/image/ab67706f000000029b2c4d9ca18d081e722c5490",
-  name: "Hot Country",
-  desc: "Today's top country hits. Cover: Kacey Musgraves",
-};
-
 const COLLECTION_ITEM = {
   title: "Hot new release",
-  items: new Array(7).fill(ITEM),
+  items: [
+    {
+      src: "https://i.scdn.co/image/ab67706f000000029b2c4d9ca18d081e722c5490",
+      name: "Pop Hits",
+      desc: "Today's top pop hits. Cover: Dua Lipa",
+    },
+    {
+      src: "https://i.scdn.co/image/ab67706f000000029b2c4d9ca18d081e722c5490",
+      name: "Rock Classics",
+      desc: "Classic rock anthems. Cover: Queen",
+    },
+    {
+      src: "https://i.scdn.co/image/ab67706f000000029b2c4d9ca18d081e722c5490",
+      name: "Hip Hop Essentials",
+      desc: "Essential hip hop tracks. Cover: Kendrick Lamar",
+    },
+    {
+      src: "https://i.scdn.co/image/ab67706f000000029b2c4d9ca18d081e722c5490",
+      name: "Indie Vibes",
+      desc: "Indie music for the soul. Cover: Tame Impala",
+    },
+    {
+      src: "https://i.scdn.co/image/ab67706f000000029b2c4d9ca18d081e722c5490",
+      name: "Throwback Jams",
+      desc: "Nostalgic throwback hits. Cover: Michael Jackson",
+    },
+    {
+      src: "https://i.scdn.co/image/ab67706f000000029b2c4d9ca18d081e722c5490",
+      name: "EDM Party",
+      desc: "Electronic dance music party. Cover: Martin Garrix",
+    },
+    {
+      src: "https://i.scdn.co/image/ab67706f000000029b2c4d9ca18d081e722c5490",
+      name: "Chill Out",
+      desc: "Relaxing chill out tunes. Cover: Norah Jones",
+    },
+  ],
 };
 
 const Dashboard = () => {
