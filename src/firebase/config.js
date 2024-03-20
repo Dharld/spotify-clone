@@ -10,9 +10,6 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
-import CryptoJS from "crypto-js";
-
-const secret = import.meta.env.VITE_SOME_KEY;
 
 const firebaseConfig = {
   apiKey: "AIzaSyC5UMR3NXDTiP6g42fHPRM92f5nP2CWPzM",
