@@ -16,6 +16,8 @@ import {
   where,
 } from "firebase/firestore";
 
+import jwt from "jsonwebtoken";
+
 const firebaseConfig = {
   apiKey: "AIzaSyC5UMR3NXDTiP6g42fHPRM92f5nP2CWPzM",
   authDomain: "localhost:9099",
@@ -34,6 +36,9 @@ connectAuthEmulator(auth, "http://localhost:9099");
 
 const db = getFirestore(firebaseApp);
 connectFirestoreEmulator(db, "localhost", 8080);
+
+const jwtSecret = import.meta.env.VITE_JWT_SECRET;
+console.log(jwtSecret);
 
 export async function addUser(uid, creds) {
   const userRef = doc(db, "users", uid);
@@ -92,7 +97,6 @@ export const signup = async (creds) => {
     );
     const idToken = await userCredential.user.getIdToken();
     const { uid } = userCredential.user;
-
     const user = {
       ...creds,
       uid,

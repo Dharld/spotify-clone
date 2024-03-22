@@ -40,8 +40,6 @@ const Login = () => {
         if (res.success) {
           successToast("Login successful!");
           navigate("/");
-        } else {
-          errorToast(res.error.message);
         }
       }
     };

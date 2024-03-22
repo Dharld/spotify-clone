@@ -15,6 +15,7 @@ const { onRequest } = require("firebase-functions/v2/https");
 const admin = require("firebase-admin");
 const { default: axios } = require("axios");
 const serviceAccount = require("./config.json");
+const jwt = require("jsonwebtoken");
 
 const SpotifyWebApi = require("spotify-web-api-node");
 
@@ -33,7 +34,7 @@ const db = admin.firestore();
 const auth = admin.auth();
 
 const apiURL = "http://127.0.0.1:5001/spotify-9a74d/us-central1";
-
+const jwtSecret = "fd1gfh48q+9/*dfnjdafa_'çàpadfnquialmbopuatn";
 const clientId = "7e1ca92e581c4b5487cc1cd19eb64d46";
 const clientSecret = "5e344fc03dc046d6936f668ceac5b23c";
 const redirectUri = `${apiURL}/callback`;
@@ -94,19 +95,62 @@ exports.getUserByUUID = onRequest(async (req, res) => {
   }
 });
 
+exports.signup = onRequest(async (req, res) => {
+  const { email, password, displayName, dob, gender } = req.body;
+  try {
+    if (!email || !password || !displayName) {
+      return handleError(res, false, "Please enter all the credentials");
+    }
+
+    const userRecord = await auth.createUser({
+      email,
+      emailVerified: false,
+      displayName,
+    });
+
+    const { uid } = userRecord;
+
+    const storedUser = {
+      email,
+      password,
+      displayName,
+      dob,
+      uid,
+      provider: "Email and Password",
+      createdAt: new Date(),
+      gender,
+    };
+
+    const docRef = db.collection("users").doc(uid);
+    await docRef.set(storedUser);
+
+    const token = jwt.sign({ uid }, jwtSecret);
+    return sendResponse(res, true, { token }, "User created successfully.");
+  } catch (error) {
+    console.error(error);
+
+    const user = await auth.currentUser;
+
+    user && (await user.delete());
+
+    return handleError(res, error);
+  }
+});
 exports.login = onRequest(async (req, res) => {
   cors(req, res, async () => {
+    let returnedToken;
     try {
       const { token, email, password } = req.body;
       let user;
       if (token) {
-        const decodedToken = await auth.verifyIdToken(token);
+        const decodedToken = await jwt.verify(token, jwtSecret);
         // Use the token to retrieve the user from firestore
         const { uid } = decodedToken;
         const userRef = db.collection("users").doc(uid);
         const userSnapshot = await userRef.get();
         if (userSnapshot.exists) {
           user = userSnapshot.data();
+          returnedToken = token;
         } else {
           return handleError(res, new Error("User not found."));
         }
@@ -131,11 +175,18 @@ exports.login = onRequest(async (req, res) => {
           user = querySnapshot.docs[0].data();
           if (user.password !== password) {
             return handleError(res, new Error("Invalid credentials"));
+          } else {
+            returnedToken = jwt.sign({ uid: user.uid }, jwtSecret);
           }
         }
       }
       if (user) {
-        return sendResponse(res, true, user, "User signed in.");
+        return sendResponse(
+          res,
+          true,
+          { user, returnedToken },
+          "User signed in."
+        );
       } else {
         return handleError(res, new Error("Invalid credentials"));
       }
