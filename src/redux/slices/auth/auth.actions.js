@@ -2,17 +2,16 @@ import {
   auth,
   addUser,
   userExists,
-  getUserByUUID,
+  signup as firebaseSignup,
 } from "../../../firebase/config";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
 import { GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import { createAsyncThunk, createAction } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export const setTempUser = createAction("auth/setTempUser");
+
+const apiURL = import.meta.env.VITE_CLOUD_URL;
 
 export const checkUserExistence = createAsyncThunk(
   "auth/checkUserExistence",
@@ -29,20 +28,28 @@ export const checkUserExistence = createAsyncThunk(
 // Asynchronous actions
 export const login = createAsyncThunk("auth/login", async (creds) => {
   try {
-    const { email, password } = creds;
-    const { user } = await signInWithEmailAndPassword(auth, email, password);
-    if (user) {
-      const uid = user.uid;
-      let userStored = await getUserByUUID(uid);
-      const createdAt = userStored.createdAt
-        ? userStored.createdAt.toString()
-        : null;
-      return {
-        ...userStored,
-        createdAt,
-      };
+    const { email, password, token } = creds;
+    let res;
+
+    if (token) {
+      res = await axios
+        .post(`${apiURL}/login`, {
+          token: token,
+        })
+        .then((res) => res.data);
     } else {
-      throw new Error("Invalid credentials");
+      res = await axios
+        .post(`${apiURL}/login`, {
+          email,
+          password,
+        })
+        .then((res) => res.data);
+    }
+
+    if (res.success) {
+      return res.data;
+    } else {
+      throw new Error(res.message);
     }
   } catch (e) {
     console.error(e);
@@ -88,21 +95,16 @@ export const signInWithFacebook = createAsyncThunk(
 );
 
 export const signup = createAsyncThunk("auth/signup", async (creds) => {
-  const { email, password } = creds;
-
-  const userCredential = await createUserWithEmailAndPassword(
-    auth,
-    email,
-    password
-  );
-  const user = userCredential.user;
-
   creds.provider = "Email and Password";
   creds.createdAt = new Date();
-
-  await addUser(user.uid, creds);
-
-  return user.providerData; // Return user object if signup is successful
+  const res = await firebaseSignup(creds);
+  if (res.success) {
+    const idToken = res.idToken;
+    localStorage.setItem("idToken", idToken);
+    return null;
+  } else {
+    throw new Error(res.message);
+  }
 });
 
 export const logout = createAsyncThunk("auth/logout", async () => {

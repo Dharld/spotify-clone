@@ -1,7 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import {
+  getAuth,
+  connectAuthEmulator,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import {
   collection,
+  connectFirestoreEmulator,
   doc,
   getDoc,
   getDocs,
@@ -13,7 +18,8 @@ import {
 
 const firebaseConfig = {
   apiKey: "AIzaSyC5UMR3NXDTiP6g42fHPRM92f5nP2CWPzM",
-  authDomain: "spotify-9a74d.firebaseapp.com",
+  authDomain: "localhost:9099",
+  databaseURL: "http://localhost:8080",
   projectId: "spotify-9a74d",
   storageBucket: "spotify-9a74d.appspot.com",
   messagingSenderId: "934493280858",
@@ -23,10 +29,11 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 
-// Access Firebase services using the namespaced API
 const auth = getAuth(firebaseApp);
+connectAuthEmulator(auth, "http://localhost:9099");
 
 const db = getFirestore(firebaseApp);
+connectFirestoreEmulator(db, "localhost", 8080);
 
 export async function addUser(uid, creds) {
   const userRef = doc(db, "users", uid);
@@ -67,4 +74,53 @@ export const getUserByUUID = async (uuid) => {
   }
 };
 
+export const signup = async (creds) => {
+  const { email, password, displayName } = creds;
+  try {
+    if (!email || !password || !displayName) {
+      return {
+        success: false,
+        message: "Please enter your email address, password and display name.",
+      };
+    }
+
+    // Signup the user
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const idToken = await userCredential.user.getIdToken();
+    const { uid } = userCredential.user;
+
+    const user = {
+      ...creds,
+      uid,
+      email,
+      displayName,
+      provider: "Email and Password",
+    };
+
+    // add the user to firestore
+    const docRef = doc(db, "users", uid);
+    await setDoc(docRef, user);
+
+    return {
+      success: true,
+      idToken: idToken,
+    };
+  } catch (error) {
+    console.error(error);
+    // If the user had been added to firebase auth, delete the user
+    const user = await auth.currentUser;
+
+    user && user.delete();
+
+    return {
+      success: false,
+      message: error.message,
+      error,
+    };
+  }
+};
 export { auth, db };

@@ -49,7 +49,6 @@ const authSlice = createSlice({
           state.loading = false; // Set loading to false for
           if (!action.type.startsWith("auth/check")) {
             state.user = action.payload; // Set user from action payload
-            localStorage.setItem("user", JSON.stringify(action.payload));
           }
         }
       )

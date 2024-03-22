@@ -81,12 +81,12 @@ const Signup = () => {
   }; // Components
 
   const handleSubmit = async () => {
-    try {
-      const res = await dispatch(signup(credentials));
+    const res = await dispatch(signup(credentials));
+    if (res.error) {
+      return errorToast(res.error.message);
+    } else {
       successToast("User has been successfully created!");
       navigate("/login");
-    } catch (e) {
-      errorToast(e.message);
     }
   };
 

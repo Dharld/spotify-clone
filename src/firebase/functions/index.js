@@ -15,17 +15,19 @@ const { onRequest } = require("firebase-functions/v2/https");
 const admin = require("firebase-admin");
 const { default: axios } = require("axios");
 const serviceAccount = require("./config.json");
-const jwt = require("jsonwebtoken");
 
 const SpotifyWebApi = require("spotify-web-api-node");
 
+const cors = require("cors")({ origin: true });
+
 // Initialize the firebase admin sdk
-admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://spotify-9a74d.firebaseio.com",
+});
 
 // Initialize the firestore database
 const db = admin.firestore();
-const settings = { host: "localhost:8080", ssl: false };
-db.settings(settings);
 
 // Auth can't use the local emulators
 const auth = admin.auth();
@@ -51,10 +53,10 @@ function handleError(res, error, defaultMessage) {
   return sendResponse(res, false, null, error.message || defaultMessage);
 }
 
-const addUser = async (user) => {
+/* const addUser = async (user) => {
   const userRef = db.collection("users").doc(user.uid);
   await userRef.set(user);
-};
+}; */
 
 exports.userExists = onRequest(async (req, res) => {
   try {
@@ -81,7 +83,7 @@ exports.getUserByUUID = onRequest(async (req, res) => {
     const { uuid } = req.query;
     const userRef = db.collection("users").doc(uuid);
     const userSnapshot = await userRef.get();
-    if (userSnapshot.exists()) {
+    if (userSnapshot.exists) {
       const userData = userSnapshot.data();
       return sendResponse(res, true, userData, "User retrieved.");
     } else {
@@ -92,76 +94,55 @@ exports.getUserByUUID = onRequest(async (req, res) => {
   }
 });
 
-exports.signup = onRequest(async (req, res) => {
-  try {
-    const { email, password, displayName } = req.body;
-
-    if (!email || !password || !displayName) {
-      return handleError(res, new Error("Please provide all the credentials"));
-    }
-
-    // Signup the user
-    const userRecord = await auth.createUser({ email, password });
-    const { uid } = userRecord;
-
-    const user = {
-      uid,
-      email,
-      displayName,
-      createdAt: userRecord.metadata.creationTime,
-      provider: "Email and Password",
-    };
-
-    // Create a custom token
-    const customToken = jwt.sign({ uid }, clientSecret);
-
-    // add the user to firestore
-    await addUser(user);
-
-    return sendResponse(
-      res,
-      true,
-      { token: customToken },
-      "User created successfully."
-    );
-  } catch (error) {
-    console.error(error);
-
-    // If the user had been added to firebase auth, delete the user
-    const userRecord = await auth.getUserByEmail(req.body.email);
-    if (userRecord) {
-      await admin.auth().deleteUser(userRecord.uid);
-    }
-
-    res.json({
-      success: false,
-      message: "Error creating user",
-    });
-  }
-});
-
 exports.login = onRequest(async (req, res) => {
-  try {
-    const { token, email, password } = req.body;
-    if (token) {
-      const decodedToken = await jwt.verify(token, clientSecret);
-      const user = await auth.getUser(decodedToken.uid);
-      if (user) {
-        return sendResponse(res, true, user, "User signed in successfully!");
+  cors(req, res, async () => {
+    try {
+      const { token, email, password } = req.body;
+      let user;
+      if (token) {
+        const decodedToken = await auth.verifyIdToken(token);
+        // Use the token to retrieve the user from firestore
+        const { uid } = decodedToken;
+        const userRef = db.collection("users").doc(uid);
+        const userSnapshot = await userRef.get();
+        if (userSnapshot.exists) {
+          user = userSnapshot.data();
+        } else {
+          return handleError(res, new Error("User not found."));
+        }
+      } else {
+        if (!email || !password) {
+          return handleError(
+            res,
+            new Error("Please provide all the credentials")
+          );
+        }
+        const querySnapshot = await db
+          .collection("users")
+          .where("email", "==", email)
+          .get();
+
+        if (querySnapshot.docs.length === 0) {
+          return handleError(
+            res,
+            new Error("There's no user with this email.")
+          );
+        } else {
+          user = querySnapshot.docs[0].data();
+          if (user.password !== password) {
+            return handleError(res, new Error("Invalid credentials"));
+          }
+        }
       }
+      if (user) {
+        return sendResponse(res, true, user, "User signed in.");
+      } else {
+        return handleError(res, new Error("Invalid credentials"));
+      }
+    } catch (error) {
+      return handleError(res, error);
     }
-    if (user) {
-      // We keep the spotify token in the user object
-      const spotifyAccessToken = spotifyApi.getAccessToken();
-      const userRef = db.collection("users").doc(user.uid);
-      await userRef.update({ spotifyToken: spotifyAccessToken });
-      return sendResponse(res, true, user, "User signed in.");
-    } else {
-      return sendResponse(res, false, null, "Invalid credentials.");
-    }
-  } catch (error) {
-    return handleError(res, error, error.message);
-  }
+  });
 });
 
 exports.authorizeSpotify = onRequest(async (req, res) => {
