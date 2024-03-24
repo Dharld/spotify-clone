@@ -72,6 +72,7 @@ const Dashboard = () => {
       errorToast(error.message);
     }
   }, [error]);
+
   useEffect(() => {
     const handleScroll = () => {
       const currentPosition = dashboardRef.current.scrollTop;
@@ -120,9 +121,7 @@ const Dashboard = () => {
           {loadingRecents ? (
             <div>LoadingRecents...</div>
           ) : (
-            recents.map((r, i) => (
-              <Recent label={r.label} src={r.imgUrl} key={i} />
-            ))
+            recents.map((t, i) => <Recent track={t} key={i} />)
           )}
         </div>
         <div className="collections">

@@ -27,13 +27,15 @@ export const fetchRecentlyPlayedTracks = createAsyncThunk(
         .then((res) => res.data);
 
       console.log(response);
+
       const items = response.data.map((el) => {
         const track = el.track;
         const label = track.name;
         const previewUrl = track.preview_url;
         const imgUrl = track.album.images[2].url;
+        const artists = track.artists;
 
-        return { label, previewUrl, imgUrl };
+        return { label, previewUrl, imgUrl, artists };
       });
 
       return items;
