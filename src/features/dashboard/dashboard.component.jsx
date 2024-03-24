@@ -4,11 +4,14 @@ import Tag from "../../components/tag/tag.component";
 import { useEffect, useRef, useState } from "react";
 import Recent from "../../components/recent/recent.component.jsx";
 import Collection from "../../components/collection/collection.component.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRecentlyPlayedTracks } from "../../redux/slices/tracks/tracks.actions.js";
+import { useToast } from "../../context/toaster.context.jsx";
 
-const RECENT_ITEM = {
-  src: "https://i.scdn.co/image/ab67706f00000002442131f5be7366c4c3ededb3",
-  label: "Confidence Boost",
-};
+// const RECENT_ITEM = {
+//   src: "https://i.scdn.co/image/ab67706f00000002442131f5be7366c4c3ededb3",
+//   label: "Confidence Boost",
+// };
 
 const COLLECTION_ITEM = {
   title: "Hot new release",
@@ -52,19 +55,26 @@ const COLLECTION_ITEM = {
 };
 
 const Dashboard = () => {
-  const [recents, setRecents] = useState(new Array(8).fill(RECENT_ITEM));
+  const { errorToast } = useToast();
+  const error = useSelector((state) => state.track.error);
+  const recents = useSelector((state) => state.track.recentlyPlayedTracks);
+  const loadingRecents = useSelector((state) => state.track.loading);
 
   const [collections, setCollections] = useState(
     new Array(4).fill(COLLECTION_ITEM)
   );
-
   const [scrollPosition, setScrollPosition] = useState(0);
+  const dispatch = useDispatch();
   const dashboardRef = useRef();
 
   useEffect(() => {
+    if (error) {
+      errorToast(error.message);
+    }
+  }, [error]);
+  useEffect(() => {
     const handleScroll = () => {
       const currentPosition = dashboardRef.current.scrollTop;
-      console.log(currentPosition);
       setScrollPosition(currentPosition);
     };
 
@@ -73,6 +83,13 @@ const Dashboard = () => {
     return () => {
       dashboardRef.current.removeEventListener("scroll", handleScroll);
     };
+  }, []);
+
+  useEffect(() => {
+    const spotifyToken = localStorage.getItem("spotifyToken");
+    if (spotifyToken) {
+      dispatch(fetchRecentlyPlayedTracks(spotifyToken));
+    }
   }, []);
 
   return (
@@ -100,9 +117,13 @@ const Dashboard = () => {
 
       <div className="dashboard-body">
         <div className="recents">
-          {recents.map((r, i) => (
-            <Recent label={r.label} src={r.src} key={i} />
-          ))}
+          {loadingRecents ? (
+            <div>LoadingRecents...</div>
+          ) : (
+            recents.map((r, i) => (
+              <Recent label={r.label} src={r.imgUrl} key={i} />
+            ))
+          )}
         </div>
         <div className="collections">
           {collections.map((c, i) => (

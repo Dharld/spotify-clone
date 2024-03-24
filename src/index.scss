@@ -1,13 +1,17 @@
 @import "./assets/styles/colors.scss";
 @import "./assets/styles/typography.scss";
 
-
-*, *::after, *::before  {
+*,
+*::after,
+*::before {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
   padding: 0;
+}
 
+.firebase-emulator-warning {
+  display: none;
 }

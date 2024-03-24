@@ -7,6 +7,7 @@ import withAuthGuard from "./components/check-login/with-auth.guard.jsx";
 import Dashboard from "./features/dashboard/dashboard.component.jsx";
 import Search from "./features/search/search.component.jsx";
 import Playlist from "./features/playlist/playlist.component.jsx";
+import AuthorizeSpotify from "./features/authorize-spotify/authorize-spotify.component.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
         element: <Playlist />,
       },
     ],
+  },
+  {
+    path: "/authorize-spotify",
+    element: <AuthorizeSpotify />,
   },
   {
     path: "/signup",

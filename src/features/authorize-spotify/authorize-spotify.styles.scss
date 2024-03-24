@@ -1,0 +1,28 @@
+.authorize-spotify {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.authorize-spotify .container {
+  background-color: var(--background-medium);
+  border-radius: 8px;
+  padding: var(--space-md) var(--space-xxl);
+  max-width: 500px;
+}
+
+.authorize-spotify .container-title h1 {
+  font-size: var(--text-xl);
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.authorize-spotify .container-description p {
+  font-size: var(--text-md);
+  line-height: 1.125;
+}
+.authorize-spotify .button-wrapper {
+  margin-top: var(--space-xl);
+}

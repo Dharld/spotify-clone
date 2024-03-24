@@ -136,6 +136,7 @@ exports.signup = onRequest(async (req, res) => {
     return handleError(res, error);
   }
 });
+
 exports.login = onRequest(async (req, res) => {
   cors(req, res, async () => {
     let returnedToken;
@@ -143,7 +144,7 @@ exports.login = onRequest(async (req, res) => {
       const { token, email, password } = req.body;
       let user;
       if (token) {
-        const decodedToken = await jwt.verify(token, jwtSecret);
+        const decodedToken = jwt.verify(token, jwtSecret);
         // Use the token to retrieve the user from firestore
         const { uid } = decodedToken;
         const userRef = db.collection("users").doc(uid);
@@ -161,6 +162,7 @@ exports.login = onRequest(async (req, res) => {
             new Error("Please provide all the credentials")
           );
         }
+        console.log("here");
         const querySnapshot = await db
           .collection("users")
           .where("email", "==", email)
@@ -184,7 +186,7 @@ exports.login = onRequest(async (req, res) => {
         return sendResponse(
           res,
           true,
-          { user, returnedToken },
+          { user, token: returnedToken },
           "User signed in."
         );
       } else {
@@ -197,65 +199,111 @@ exports.login = onRequest(async (req, res) => {
 });
 
 exports.authorizeSpotify = onRequest(async (req, res) => {
-  try {
-    const state = req.query.token;
-    const authorizeURL = spotifyApi.createAuthorizeURL([], state);
-    return res.redirect(authorizeURL);
-  } catch (err) {
-    console.error(err);
-    handleError(res, err, "Error logging in with Spotify.");
-  }
+  cors(req, res, async () => {
+    try {
+      const state = req.query.token;
+      const scopes = ["user-read-recently-played"];
+      const authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
+      return res.redirect(authorizeURL);
+    } catch (err) {
+      console.error(err);
+      handleError(res, err, "Error logging in with Spotify.");
+    }
+  });
 });
 
 exports.callback = onRequest(async (req, res) => {
-  try {
-    const code = req.query.code || null;
-    const state = req.query.state || null;
+  cors(req, res, async () => {
+    try {
+      const code = req.query.code || null;
+      const state = req.query.state || null;
 
-    if (state === null) {
-      return sendResponse(res, false, null, "Invalid state.");
-    } else {
-      const authOptions = {
-        url: "https://accounts.spotify.com/api/token",
-        form: {
-          code: code,
-          redirect_uri: redirectUri,
-          grant_type: "authorization_code",
-        },
-        headers: {
-          "content-type": "application/x-www-form-urlencoded",
-          Authorization:
-            "Basic " +
-            new Buffer.from(clientId + ":" + clientSecret).toString("base64"),
-        },
-        json: true,
-      };
-      const call = axios.post(authOptions.url, authOptions.form, {
-        headers: authOptions.headers,
-      });
+      if (state === null) {
+        return sendResponse(res, false, null, "Invalid state.");
+      } else {
+        const authOptions = {
+          url: "https://accounts.spotify.com/api/token",
+          form: {
+            code: code,
+            redirect_uri: redirectUri,
+            grant_type: "authorization_code",
+          },
+          headers: {
+            "content-type": "application/x-www-form-urlencoded",
+            Authorization:
+              "Basic " +
+              new Buffer.from(clientId + ":" + clientSecret).toString("base64"),
+          },
+          json: true,
+        };
+        const call = axios.post(authOptions.url, authOptions.form, {
+          headers: authOptions.headers,
+        });
 
-      const data = await call.then((response) => response.data);
+        const data = await call.then((response) => response.data);
 
-      spotifyApi.setAccessToken(data.access_token);
-      spotifyApi.setRefreshToken(data.refresh_token);
+        spotifyApi.setAccessToken(data.access_token);
+        spotifyApi.setRefreshToken(data.refresh_token);
 
-      return res.redirect(`${apiURL}/login?token=${state}`);
+        return res.redirect(
+          `http://localhost:5173/login?spotifyToken=${data.access_token}`
+        );
+      }
+    } catch (err) {
+      console.error(err);
+      handleError(res, err, "Error logging in with Spotify.");
     }
-  } catch (err) {
-    console.error(err);
-    handleError(res, err, "Error logging in with Spotify.");
-  }
+  });
 });
 
 exports.refreshSpotifyToken = onRequest(async (req, res) => {
   try {
-    const token = await spotifyApi
-      .refreshAccessToken()
-      .then((data) => data.access_token);
-    spotifyApi.setAccessToken(token);
-    return sendResponse(res, true, token, "Spotify token refreshed.");
+    cors(req, res, async () => {
+      const token = await spotifyApi
+        .refreshAccessToken()
+        .then((data) => data.access_token);
+      spotifyApi.setAccessToken(token);
+      return sendResponse(res, true, token, "Spotify token refreshed.");
+    });
   } catch (err) {
     console.error(err);
     handleError(res, err, "Error refreshing Spotify token.");
   }
+});
+
+exports.getRecentlyPlayedTracks = onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    const { limit, token } = req.query;
+    try {
+      spotifyApi.setAccessToken(token);
+      const response = await spotifyApi
+        .getMyRecentlyPlayedTracks({
+          limit: limit || 6,
+        })
+        .then((res) => res.body);
+      const recentlyPlayed = response.items;
+      return sendResponse(
+        res,
+        true,
+        recentlyPlayed,
+        "Recently played items retrieved."
+      );
+    } catch (error) {
+      if (error.statusCode === 401) {
+        const response = await spotifyApi
+          .getMyRecentlyPlayedTracks({
+            limit: limit || 6,
+          })
+          .then((res) => res.body);
+        const recentlyPlayed = response.items;
+        return sendResponse(
+          res,
+          true,
+          recentlyPlayed,
+          "Recently played items retrieved."
+        );
+      }
+      return handleError(res, error, "Error retrieving recently played items.");
+    }
+  });
 });

@@ -11,7 +11,12 @@ export default function Button({
   icon,
 }) {
   return (
-    <button type={type} className={style} onClick={onClick} disabled={disabled}>
+    <button
+      type={type}
+      className={`button ${style}`}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {loading ? (
         <div className="spinner-wrapper">
           <div className="spinner"></div>

@@ -1,9 +1,4 @@
-import {
-  auth,
-  addUser,
-  userExists,
-  signup as firebaseSignup,
-} from "../../../firebase/config";
+import { auth, addUser, userExists } from "../../../firebase/config";
 import { signInWithPopup } from "firebase/auth";
 import { GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import { createAsyncThunk, createAction } from "@reduxjs/toolkit";
@@ -47,7 +42,8 @@ export const login = createAsyncThunk("auth/login", async (creds) => {
     }
 
     if (res.success) {
-      return res.data;
+      localStorage.setItem("token", res.data.token);
+      return res.data.user;
     } else {
       throw new Error(res.message);
     }
@@ -95,15 +91,21 @@ export const signInWithFacebook = createAsyncThunk(
 );
 
 export const signup = createAsyncThunk("auth/signup", async (creds) => {
-  creds.provider = "Email and Password";
-  creds.createdAt = new Date();
-  const res = await firebaseSignup(creds);
-  if (res.success) {
-    const idToken = res.idToken;
-    localStorage.setItem("idToken", idToken);
-    return null;
-  } else {
-    throw new Error(res.message);
+  try {
+    const res = await axios
+      .post(`${apiURL}/signup`, creds)
+      .then((res) => res.data);
+
+    if (res.success) {
+      const token = res.data.token;
+      localStorage.setItem("token", token);
+      return null;
+    } else {
+      throw new Error(res.message);
+    }
+  } catch (err) {
+    console.error(err);
+    throw new Error(err.message);
   }
 });
 
@@ -111,3 +113,12 @@ export const logout = createAsyncThunk("auth/logout", async () => {
   await auth.signOut();
   return null;
 });
+
+// Authorization
+export const authorizeSpotify = createAsyncThunk(
+  "auth/authorizeSpotify",
+  async () => {
+    const token = localStorage.getItem("token");
+    window.location.href = `${apiURL}/authorizeSpotify?token=${token}`;
+  }
+);
