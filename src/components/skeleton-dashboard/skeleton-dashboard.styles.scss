@@ -1,0 +1,57 @@
+@import "../../assets/styles/layout.scss";
+
+.skeleton-dashboard {
+  .title {
+    border-radius: 4px;
+    width: 168px;
+    height: 24px;
+  }
+
+  .sk-bg {
+    background: linear-gradient(
+      90deg,
+      rgba(42, 42, 42, 1) 25%,
+      rgba(42, 42, 42, 0.75) 50%,
+      rgba(42, 42, 42, 0.5) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loader 1.5s ease-in-out infinite;
+  }
+  .recents-wrapper {
+    .items {
+      @include grid;
+      @include gridAuto(22%);
+
+      margin-top: var(--space-md);
+
+      .item {
+        border-radius: 4px;
+        height: 60px;
+      }
+    }
+  }
+  .collections {
+    margin-top: var(--space-lg);
+
+    .items {
+      @include grid;
+      @include gridAuto(calc(100% / 7 - 10px));
+      justify-content: space-between;
+      margin-top: var(--space-md);
+
+      .item {
+        height: 200px;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+@keyframes skeleton-loader {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

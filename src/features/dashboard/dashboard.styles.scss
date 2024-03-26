@@ -14,12 +14,18 @@
 
   .dashboard-body {
     padding: var(--space-md);
+    padding-top: 0;
+
+    h3 {
+      margin-bottom: var(--space-md);
+    }
   }
 
   .header-wrapper {
     padding: var(--space-md);
     position: sticky;
     top: 0;
+    z-index: 100;
   }
 
   .header {

@@ -7,6 +7,7 @@ import Collection from "../../components/collection/collection.component.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRecentlyPlayedTracks } from "../../redux/slices/tracks/tracks.actions.js";
 import { useToast } from "../../context/toaster.context.jsx";
+import SkeletonDashboard from "../../components/skeleton-dashboard/skeleton-dashboard.component.jsx";
 
 // const RECENT_ITEM = {
 //   src: "https://i.scdn.co/image/ab67706f00000002442131f5be7366c4c3ededb3",
@@ -79,58 +80,70 @@ const Dashboard = () => {
       setScrollPosition(currentPosition);
     };
 
-    dashboardRef.current.addEventListener("scroll", handleScroll);
+    dashboardRef.current &&
+      dashboardRef.current.addEventListener("scroll", handleScroll);
 
     return () => {
-      dashboardRef.current.removeEventListener("scroll", handleScroll);
+      dashboardRef.current &&
+        dashboardRef.current.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   useEffect(() => {
     const spotifyToken = localStorage.getItem("spotifyToken");
+    console.log(loadingRecents);
     if (spotifyToken) {
       dispatch(fetchRecentlyPlayedTracks(spotifyToken));
     }
   }, []);
 
   return (
-    <div
-      className={`dashboard ${scrollPosition > 50 ? "scrolled" : ""}`}
-      ref={dashboardRef}
-    >
-      <div className="header-wrapper">
-        <div className="header">
-          <div className="buttons">
-            <IconContainer name="prev" />
-            <IconContainer name="next" />
+    <>
+      <div
+        className={`dashboard ${scrollPosition > 50 ? "scrolled" : ""}`}
+        ref={dashboardRef}
+      >
+        <div className="header-wrapper">
+          <div className="header">
+            <div className="buttons">
+              <IconContainer name="prev" />
+              <IconContainer name="next" />
+            </div>
+            <div className="user">
+              <IconContainer name="bell" />
+            </div>
           </div>
-          <div className="user">
-            <IconContainer name="bell" />
+          <div className="tags">
+            <Tag label="All" />
+            <Tag label="Music" />
+            <Tag label="Podcasts" />
+            <Tag label="Audiobooks" />
           </div>
         </div>
-        <div className="tags">
-          <Tag label="All" />
-          <Tag label="Music" />
-          <Tag label="Podcasts" />
-          <Tag label="Audiobooks" />
-        </div>
-      </div>
+        {loadingRecents ? (
+          <div className="dashboard-body">
+            <SkeletonDashboard />
+          </div>
+        ) : (
+          <div className="dashboard-body">
+            <div className="recents-wrapper">
+              <h3>Recently Played</h3>
+              <div className="recents">
+                {recents.map((t, i) => (
+                  <Recent track={t} key={i} />
+                ))}
+              </div>
+            </div>
 
-      <div className="dashboard-body">
-        <div className="recents">
-          {loadingRecents ? (
-            <div>LoadingRecents...</div>
-          ) : (
-            recents.map((t, i) => <Recent track={t} key={i} />)
-          )}
-        </div>
-        <div className="collections">
-          {collections.map((c, i) => (
-            <Collection key={i} collection={c} />
-          ))}
-        </div>
+            <div className="collections">
+              {collections.map((c, i) => (
+                <Collection key={i} collection={c} />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

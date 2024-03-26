@@ -2,11 +2,11 @@
 import { usePlayer } from "../player/player.context";
 import "./recent.styles.scss";
 
-const Recent = ({ track }) => {
+const Recent = ({ track, loading = true }) => {
   const { setCurrentTrack } = usePlayer();
 
   return (
-    <div className="recent">
+    <div className={`recent ${loading ? "loading" : ""}`}>
       <div className="img">
         <img src={track.imgUrl} alt="" />
       </div>
