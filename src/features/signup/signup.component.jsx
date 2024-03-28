@@ -96,6 +96,7 @@ const Signup = () => {
       try {
         const request = dispatch(checkUserExistence(credentials.email));
         const data = await request;
+        console.log(data);
         if (!data.error) {
           setCredentials({ ...credentials, email: credentials.email });
           setStep(step + 1);

@@ -49,7 +49,7 @@ const Login = () => {
       }
     };
     const token = localStorage.getItem("token");
-    handleToken(token);
+    token && handleToken(token);
   }, []);
 
   useEffect(() => {

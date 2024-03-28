@@ -43,6 +43,7 @@ export async function addUser(uid, creds) {
 export async function userExists(email) {
   const usersCollection = collection(db, "users");
   const q = query(usersCollection, where("email", "==", email));
+
   const querySnapshot = await getDocs(q);
 
   return querySnapshot.docs.length != 0;

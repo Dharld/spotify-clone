@@ -29,7 +29,6 @@ const authSlice = createSlice({
     builder
       .addCase("auth/login/fulfilled", (state, action) => {
         const { user } = action.payload;
-
         return user;
       })
       .addCase(setTempUser, (state, action) => {

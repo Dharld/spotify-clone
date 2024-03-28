@@ -11,11 +11,16 @@ const apiURL = import.meta.env.VITE_CLOUD_URL;
 export const checkUserExistence = createAsyncThunk(
   "auth/checkUserExistence",
   async (email) => {
-    const res = await userExists(email);
-    if (res) {
-      throw {
-        message: "This address is already linked to an existing account.",
-      };
+    try {
+      const res = await userExists(email);
+      if (res) {
+        throw {
+          message: "This address is already linked to an existing account.",
+        };
+      }
+    } catch (err) {
+      console.error(err);
+      throw err;
     }
   }
 );
