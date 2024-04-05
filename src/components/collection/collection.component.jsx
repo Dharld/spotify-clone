@@ -12,8 +12,8 @@ const Item = ({ src, name, desc }) => {
     </div>
   );
 };
-const Collection = ({ collection }) => {
-  const { title, items } = collection;
+
+const Collection = ({ title, playlists }) => {
   return (
     <div className="collection">
       <div className="collection-header">
@@ -21,8 +21,14 @@ const Collection = ({ collection }) => {
         <div className="show-all">Show all</div>
       </div>
       <div className="collection-items">
-        {items.map((item, i) => (
-          <Item key={i} src={item.src} name={item.name} desc={item.desc} />
+        {playlists.map((item) => (
+          <Item
+            key={item.name}
+            src={item.images[0].url}
+            name={item.name}
+            desc={item.desc}
+            tracks={item.tracks}
+          />
         ))}
       </div>
     </div>

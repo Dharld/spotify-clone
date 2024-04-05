@@ -1,8 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchRecentlyPlayedTracks, fetchTracks } from "./tracks.actions";
+import {
+  fetchFeaturedPlaylists,
+  fetchRecentlyPlayedTracks,
+  fetchTracks,
+} from "./tracks.actions";
 
 // Define the initial state
 const initialState = {
+  featuredPlaylists: [],
   recentlyPlayedTracks: [],
   tracks: [],
   loading: false,
@@ -16,8 +21,12 @@ const tracksSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Handle rejected actions for all async thunk actions
+      .addCase(fetchFeaturedPlaylists.fulfilled, (state, action) => {
+        state.featuredPlaylists = action.payload;
+        state.loading = false;
+      })
       .addCase(fetchRecentlyPlayedTracks.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.recentlyPlayedTracks = action.payload;
         state.loading = false;
       })
@@ -27,14 +36,16 @@ const tracksSlice = createSlice({
       })
       .addMatcher(
         // Handle rejected actions for all async thunk actions
-        (action) => action.type.endsWith("/rejected"),
+        (action) =>
+          action.type.startsWith("tracks") && action.type.endsWith("/rejected"),
         (state, action) => {
           state.loading = false; // Set loading to false for rejected actions
           state.error = action.error; // Set error message from action payload
         }
       )
       .addMatcher(
-        (action) => action.type.endsWith("/pending"),
+        (action) =>
+          action.type.startsWith("tracks") && action.type.endsWith("/pending"),
         (state) => {
           state.loading = true;
           state.error = null;

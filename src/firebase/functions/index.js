@@ -308,3 +308,20 @@ exports.getRecentlyPlayedTracks = onRequest(async (req, res) => {
     }
   });
 });
+
+exports.getFeaturedPlaylists = onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    const { limit = 21, token } = req.query;
+    try {
+      spotifyApi.setAccessToken(token);
+      const response = await spotifyApi
+        .getFeaturedPlaylists()
+        .then((res) => res.body);
+      console.log(response);
+      return sendResponse(res, true, response, "Featured Playlists retrieved.");
+    } catch (err) {
+      console.error(err);
+      handleError(res, err, "Error retrieving featured playlists");
+    }
+  });
+});

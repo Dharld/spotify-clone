@@ -35,7 +35,6 @@ connectAuthEmulator(auth, "http://localhost:9099");
 const db = getFirestore(firebaseApp);
 connectFirestoreEmulator(db, "localhost", 8080);
 
-
 export async function addUser(uid, creds) {
   const userRef = doc(db, "users", uid);
   return await setDoc(userRef, creds);
@@ -49,8 +48,6 @@ export async function userExists(email) {
 
   return querySnapshot.docs.length != 0;
 }
-
-
 
 export const getUserByUUID = async (uuid) => {
   try {
@@ -126,4 +123,5 @@ export const signup = async (creds) => {
     };
   }
 };
+
 export { auth, db };
